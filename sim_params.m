@@ -30,6 +30,10 @@ yellow = [1 1 0];
 cyan = [0 1 1];
 magenta = [1 0 1];
 
-tau_0 =7.5;%16.0;%20 *20 * pi / 360;
-motor_spring_constant =  pi / 0.128; % Nm/rad
+% f = 3;
+% omega_n = 2*pi*f;
+% I = (platform_mass / 6) * excenter.R^2;
+% k = ((platform_mass / 6) * excenter.R^2) * (2*pi*3)^2;
+tau_0 =0.075;%16.0;%20 *20 * pi / 360;
+motor_spring_constant =  ((platform_mass / 6) * excenter.R^2) * (2*pi*3)^2;%pi / 0.128; % Nm/rad
 motor_spring_offset = tau_0/motor_spring_constant;%tau_0 / motor_spring_constant + deg2rad(20);%deg2rad(20); % deg
