@@ -25,6 +25,23 @@ dist_xz = sqrt((platform.P12L(1) - P12Lh(1))^2 + (platform.P12L(3) - P12Lh(3))^2
 % Update the y-coordinate of platform.P12L
 y_coords(1) = sqrt(coupler.L^2 - dist_xz^2);
 
+% %------------------------------
+% platform.P12L(2) = y_coords(1);
+% % Force applied at point P (20/6 kg in negative y direction)
+% F_Py = -(20 / 6 * 9.81); % Converting kg to Newtons (assuming standard gravity)
+% 
+% % Position vectors
+% r_BP = platform.P12L - base.P12L;
+% r_BH = P12Lh - base.P12L;
+% r_HP = platform.P12L - P12Lh;
+% 
+% % Calculate the torque
+% % Since the force is in the negative y direction, the force vector is:
+% F_P = [0, F_Py, 0];
+% 
+% % Calculate the torque using the cross product
+% tau_B = cross(r_BP, F_P);
+% fprintf('The required torque components to ensure point P does not move are: %.2f Nm\n', norm(tau_B));
 % ----------------------------------
 
 
@@ -106,7 +123,7 @@ y_coords(6) = sqrt(coupler.L^2 - dist_xz^2);
 
 tolerance = 1e-12;
 if all(abs(diff(y_coords)) < tolerance)
-    fprintf('The value of y_zero is: %.64f\n', y_coords);
+    fprintf('The value of y_zero is: %.64f\n', mean(y_coords));
 
     motorZeroy = mean(y_coords);
 else

@@ -1,6 +1,6 @@
 clear all; clc; close all; %#ok<CLALL>
 hexapod = get_params();
-dT = 1e-3;
+dT = 1e-4;
 time0 = (0:dT:4)'; 
 time = filter(dT/2,[1,dT/2-1],time0); %#ok<NASGU>
 T1=1;
