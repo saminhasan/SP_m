@@ -1,4 +1,4 @@
-close all
+function [] = motion_comp(out, pose)
 % Extract data from simulation output
 ts = out.pose_simscape.Time;
 xs = out.pose_simscape.Data(:,1);
@@ -7,6 +7,20 @@ zs = out.pose_simscape.Data(:,3);
 Rxs = - out.pose_simscape.Data(:,4)  - pi/2;
 Rys = - out.pose_simscape.Data(:,6)  - pi/2;
 Rzs = out.pose_simscape.Data(:,5);
+
+% Unpack values from the pose struct array
+[x, y, z, Rx, Ry, Rz, time0] = deal(zeros(1, length(pose)));
+
+for i = 1:length(pose)
+    x(i) = pose(i).x;
+    y(i) = pose(i).y;
+    z(i) = pose(i).z;
+    Rx(i) = pose(i).Rx;
+    Ry(i) = pose(i).Ry;
+    Rz(i) = pose(i).Rz;
+    time0(i) = pose(i).time0;
+end
+
 figure;
 subplot(3,2,1);
 hold on;

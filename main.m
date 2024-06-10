@@ -21,23 +21,29 @@ Rz = 3 * pi / 180 * sin(2 * pi * f * time);
 Rx = 3 * pi / 180 * sin(2 * pi * 2 * f * time);
 
 % Preallocate motorAngles array
-motorAngles = zeros(length(time), 6); 
+motorAngles = zeros(length(time0), 6); 
+pose(length(time0)) = struct('x', [], 'y', [], 'z', [], 'Rx', [], 'Ry', [], 'Rz', [], 'time0', []);
 
-for i = 1:length(time)
-    pose.x = x(i);
-    pose.y = y(i) ;
-    pose.z = z(i);
-    pose.Rx = Rx(i);
-    pose.Ry = Ry(i);
-    pose.Rz = Rz(i);
-    % Call calcMotorAngles with scalar values
-    motorAngles(i, :) = calcMotorAngles(pose);
+for i = 1:length(time0)
+    % Store values in the pose struct array
+    pose(i).x = x(i);
+    pose(i).y = y(i);
+    pose(i).z = z(i);
+    pose(i).Rx = Rx(i);
+    pose(i).Ry = Ry(i);
+    pose(i).Rz = Rz(i);
+    pose(i).time0 = time0(i);
+    
+    % Call calcMotorAngles with the current pose
+    motorAngles(i, :) = calcMotorAngles(pose(i));
 end
-
 motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...
               -motorAngles(:,3), -motorAngles(:,4), ...
               -motorAngles(:,5), -motorAngles(:,6)];
 
 sim_params
+out = sim('hp_v1.slx');
+% motion_comp(out, pose);
+torque_calc(out);
 disp(">>Done.")
 %writematrix(motorData, 'motorData.txt');

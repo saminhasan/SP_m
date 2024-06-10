@@ -1,4 +1,4 @@
-close all
+function [] = torque_calc(out)
 % Define colors for different motors
 colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
@@ -9,7 +9,7 @@ N = 36; % gear ratio
 J_motor = 0.000012; % motor inertia
 
 %retrive simulation data
-sim_time = out.simout.Time;
+sim_time = out.simout.Time; %#ok<NASGU>
 omegas = out.simout.Data(:, 1:3:16);
 omegas_rpm = omegas * (60 / (2 * pi));
 alphas = out.simout.Data(:, (1:3:16)+1);
@@ -30,7 +30,7 @@ masked_time_indices = (out.simout.Time > T1) & (out.simout.Time < T2);
 % Filter the data based on these indices
 masked_omegas_rpm = omegas_rpm(masked_time_indices, :);
 masked_t_total = t_total(masked_time_indices, :);
-masked_time = out.simout.Time(masked_time_indices);
+masked_time = out.simout.Time(masked_time_indices); %#ok<NASGU>
 
 figure;
 hold on;
@@ -38,8 +38,8 @@ plots = gobjects(1, 6);
 labels = cell(1, 6);
 for i = 1:6
     % Plot data for each motor
-    % plots(i) = plot(omegas_rpm(:, i) * N, t_total(:, i), 'Color', colors(i));
-    plots(i) = plot(masked_omegas_rpm(:, i) * N, masked_t_total(:, i), 'Color', colors(i));
+    plots(i) = plot(omegas_rpm(:, i) * N, t_total(:, i), 'Color', colors(i));
+    % plots(i) = plot(masked_omegas_rpm(:, i) * N, masked_t_total(:, i), 'Color', colors(i));
     labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
 end
 
@@ -58,7 +58,8 @@ title('Torque (Nm) vs Angular Velocity (RPM)');
 grid on;
 hold off;
 
-
+max(t_total)
+min(t_total)
 % figure;
 % hold on;
 % for i = 1:6
