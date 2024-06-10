@@ -43,7 +43,7 @@ motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...
 
 sim_params
 out = sim('hp_v1.slx');
-% motion_comp(out, pose);
+motion_comp(out, pose);
 torque_calc(out);
 disp(">>Done.")
 %writematrix(motorData, 'motorData.txt');
