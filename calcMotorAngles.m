@@ -62,7 +62,6 @@ uz = [sin(thetaz),0,cos(thetaz)];
 % distance between left bearings in global coordinate system
 Delta.global = platform.P12L - base.P12L;
 Delta.local = [dot(Delta.global,ux);dot(Delta.global,uy);dot(Delta.global,uz)];
-% Calculate the tip coordinate in the global frame
 a=excenter.R;
 b=sqrt(Delta.local(1)^2+Delta.local(2)^2);
 c=sqrt(coupler.L^2-Delta.local(3)^2);

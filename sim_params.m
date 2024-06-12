@@ -30,10 +30,14 @@ yellow = [1 1 0];
 cyan = [0 1 1];
 magenta = [1 0 1];
 
+N = 36; % gear ratio
+J_motor = 0.0; % motor inertia zero for now 
 % f = 3;
 % omega_n = 2*pi*f;
 % I = (platform_mass / 6) * excenter.R^2;
 % k = ((platform_mass / 6) * excenter.R^2) * (2*pi*3)^2;
-tau_0 =2.52;%16.0;%20 *20 * pi / 360;
-motor_spring_constant =  (((platform_mass / 6) * excenter.R^2) * (2*pi*3)^2) ;%pi / 0.128; % Nm/rad
-motor_spring_offset = (tau_0/motor_spring_constant) - deg2rad(37.1);%tau_0 / motor_spring_constant + deg2rad(20);%deg2rad(20); % deg
+
+% tau_0 =2.52;%16.0;%20 *20 * pi / 360;
+tau_0 = ((20/6) * 9.81 * excenter.R);
+motor_spring_constant =  ((((platform_mass / 6) * excenter.R^2) + J_motor * N^2 )* (2*pi*3)^2) ;%pi / 0.128; % Nm/rad
+motor_spring_offset = (tau_0/motor_spring_constant);% - deg2rad(37.1);%tau_0 / motor_spring_constant + deg2rad(20);%deg2rad(20); % deg
