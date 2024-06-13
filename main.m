@@ -41,9 +41,16 @@ motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...
               -motorAngles(:,3), -motorAngles(:,4), ...
               -motorAngles(:,5), -motorAngles(:,6)];
 
+
 sim_params
-out = sim('hp_v1.slx');
-motion_comp(out, pose);
-torque_calc(out);
-disp(">>Done.")
+% out = sim('hp_v1.slx');
+% motion_comp(out, pose);
+% torque_calc(out);
+% disp(">>Done.")
 %writematrix(motorData, 'motorData.txt');
+% writematrix([time0',-motorAngles(:,1)*180/pi],'motor1.txt')
+% writematrix([time0',-motorAngles(:,2)*180/pi],'motor2.txt')
+% writematrix([time0',-motorAngles(:,3)*180/pi],'motor3.txt')
+% writematrix([time0',-motorAngles(:,4)*180/pi],'motor4.txt')
+% writematrix([time0',-motorAngles(:,5)*180/pi],'motor5.txt')
+% writematrix([time0',-motorAngles(:,6)*180/pi],'motor6.txt')
