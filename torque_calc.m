@@ -5,8 +5,8 @@ colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 % motor parameters
 % max T 0.4, continous T 0.27
 
-N = 36; % gear ratio
-J_m = 12e-6; % motor inertia in motor axis frame
+N = 1; % gear ratio
+J_m = 12e-6*0; % motor inertia in motor axis frame
 
 %retrive simulation data
 sim_time = out.simout.Time; %#ok<NASGU>
@@ -16,8 +16,8 @@ taus_load = out.simout.Data(:, (2:4:22) + 2);
 omegas_rpm = omegas * (60 / (2 * pi));
 
 
-t_motor = J_m * alphas * N;
-t_total = t_motor + taus_load/ N;
+tau_motor = J_m * alphas * N;
+tau_total = tau_motor + taus_load/ N;
 
 % plot motor T omega Nm and RPM
 % Define the time range
@@ -38,7 +38,7 @@ plots = gobjects(1, 6);
 labels = cell(1, 6);
 for i = 1:6
     % Plot data for each motor
-    plots(i) = plot(omegas_rpm(:, i) * N, t_total(:, i), 'Color', colors(i));
+    plots(i) = plot(omegas_rpm(:, i) * N, tau_total(:, i), 'Color', colors(i));
     % plots(i) = plot(masked_omegas_rpm(:, i) * N, masked_t_total(:, i), 'Color', colors(i));
     labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
 end
@@ -47,10 +47,10 @@ end
 legend(plots, labels, 'Location', 'northwest');
 
 % Add y-lines for motor peaks and rated values
-yline(0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off');
-yline(-0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off');
-yline(0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off');
-yline(-0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off');
+yline(0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(-0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+yline(-0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
 
 xlabel('Angular Velocity (RPM)');
 ylabel('Torque (Nm)');
