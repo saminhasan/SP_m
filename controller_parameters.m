@@ -1,6 +1,6 @@
-fN = 36; % gear ratio
-J_r = (platform_mass/6) * excenter.R^2;  % robot equivalent inertia in robot axis frame
-J_m = 0.000012; % motor inertia in motor axis frame
+N = 36; % gear ratio
+J_r = (20 /6) * 0.08^2;  % robot equivalent inertia in robot axis frame
+J_m = 0*12e-6; % motor inertia in motor axis frame
 K_r =  motor_spring_constant; %spring constant in robot axis frame
 % K_m = K_r /N; % spring constant in motor axis frame
 

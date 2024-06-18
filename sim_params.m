@@ -1,4 +1,6 @@
 % sim params
+hexapod = get_params();
+
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
@@ -30,14 +32,25 @@ yellow = [1 1 0];
 cyan = [0 1 1];
 magenta = [1 0 1];
 
-N = 36; % gear ratio
-J_m = 0.0; % motor inertia zero for now 
-% f = 3;
-% omega_n = 2*pi*f;
-% I = (platform_mass / 6) * excenter.R^2;
-% k = ((platform_mass / 6) * excenter.R^2) * (2*pi*3)^2;
-
-% tau_0 =2.52;%16.0;%20 *20 * pi / 360;
-tau_0 = ((20/6) * 9.81 * excenter.R);
+g = 9.80665;
+N = 1; % gear ratio
+J_r = (platform_mass / 6) * excenter.R^2;  % robot equivalent inertia in robot axis frame
+J_m = 12e-6 *0; % motor inertia in motor axis frame
+tau_0 = ((platform_mass/6) * g  * excenter.R^2);
 motor_spring_constant =  ((((platform_mass / 6) * excenter.R^2) + J_m * N^2 )* (2*pi*3)^2) ;%pi / 0.128; % Nm/rad
 motor_spring_offset = (tau_0/motor_spring_constant);% - deg2rad(37.1);%tau_0 / motor_spring_constant + deg2rad(20);%deg2rad(20); % deg
+
+
+
+K_r =  motor_spring_constant; %spring constant in robot axis frame
+K_m = K_r / N; % spring constant in motor axis frame
+
+J_e = (J_m + J_r/ N^2);% eq inertia motor axis frame
+K_e = K_r / N; % spring constant in motor axis frame
+w_traj = 3*2*pi; % trajectory frequency
+w_n =  5 * w_traj; % controller bandwidth
+zeta = 1;
+P = w_n^2 * J_e - K_e;
+D = 2 * zeta * w_n * J_e;
+w_f = w_n *10;
+

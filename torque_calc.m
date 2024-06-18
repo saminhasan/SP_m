@@ -6,14 +6,14 @@ colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 % max T 0.4, continous T 0.27
 
 N = 36; % gear ratio
-J_m = 0.000012; % motor inertia
+J_m = 12e-6; % motor inertia in motor axis frame
 
 %retrive simulation data
 sim_time = out.simout.Time; %#ok<NASGU>
-omegas = out.simout.Data(:, 1:3:16);
+omegas = out.simout.Data(:, 2:4:22);
+alphas = out.simout.Data(:, (2:4:22)+1);
+taus_load = out.simout.Data(:, (2:4:22) + 2);
 omegas_rpm = omegas * (60 / (2 * pi));
-alphas = out.simout.Data(:, (1:3:16)+1);
-taus_load = out.simout.Data(:, (1:3:16) + 2);
 
 
 t_motor = J_m * alphas * N;
@@ -21,16 +21,16 @@ t_total = t_motor + taus_load/ N;
 
 % plot motor T omega Nm and RPM
 % Define the time range
-T1 = 1;
-T2 = 3;
-
-% Extract the indices for which sim_time is within the specified range
-masked_time_indices = (out.simout.Time > T1) & (out.simout.Time < T2);
-
-% Filter the data based on these indices
-masked_omegas_rpm = omegas_rpm(masked_time_indices, :);
-masked_t_total = t_total(masked_time_indices, :);
-masked_time = out.simout.Time(masked_time_indices); %#ok<NASGU>
+% T1 = 1;
+% T2 = 3;
+% 
+% % Extract the indices for which sim_time is within the specified range
+% masked_time_indices = (out.simout.Time > T1) & (out.simout.Time < T2);
+% 
+% % Filter the data based on these indices
+% masked_omegas_rpm = omegas_rpm(masked_time_indices, :); %#ok<NASGU>
+% masked_t_total = t_total(masked_time_indices, :); %#ok<NASGU>
+% masked_time = out.simout.Time(masked_time_indices); %#ok<NASGU>
 
 figure;
 hold on;
@@ -58,8 +58,8 @@ title('Torque (Nm) vs Angular Velocity (RPM)');
 grid on;
 hold off;
 
-max(t_total)
-min(t_total)
+% max(t_total)
+% min(t_total)
 % figure;
 % hold on;
 % for i = 1:6

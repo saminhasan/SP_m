@@ -123,7 +123,7 @@ y_coords(6) = sqrt(coupler.L^2 - dist_xz^2);
 
 tolerance = 1e-12;
 if all(abs(diff(y_coords)) < tolerance)
-    fprintf('The value of y_zero is: %.64f\n', mean(y_coords));
+    % fprintf('The value of y_zero is: %.64f\n', mean(y_coords));
 
     motorZeroy = mean(y_coords);
 else
