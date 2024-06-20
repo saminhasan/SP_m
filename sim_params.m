@@ -42,11 +42,12 @@ g = 9.80665; % acceleration due to gravity, m/s^2
 
 % Mechanical parameters
 N = 1; % gear ratio
-J_m = 12e-6 * 0; % motor inertia in motor axis frame
+J_m = 12e-6*0; % motor inertia in motor axis frame
 
 % Calculations involving excenter.R
 J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot axis frame
-tau_0 = ((platform_mass / 6) * g * excenter.R^2); % torque due to gravity
+% tau_0 = ((platform_mass / 6) * g * excenter.R^2); % torque due to gravity % zeroAngleTorqueCalc();
+tau_0 = zeroAngleTorqueCalc(); % torque due to gravity % zeroAngleTorqueCalc();
 
 % Motor spring properties
 motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_m * N^2) * (2 * pi * 3)^2); % spring constant in motor axis frame
@@ -67,3 +68,15 @@ zeta = 1; % damping ratio
 P = w_n^2 * J_e - K_e; % proportional gain
 D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency
+
+height = excenter.R; % Height of the cylinder in meters
+radius = 0.01; % Radius of the cylinder in centimeters
+
+% Calculate the density
+density_cyl = (2 * (12e-6 / N^2)) / (pi * radius^4 * height);% 12375888.37482578121125698089599609375; kg / m^3 for N = 36
+coupler_mass = coupler.L * radius^2 * rho; % 0.219800000000000 kg 
+excenter_mass = excenter.R * radius^2 * rho; % 0.062800000000000 kg
+
+%
+% Display the result
+% fprintf('The density of the cylinder is %.64f kg/m^3\n', density_cyl);

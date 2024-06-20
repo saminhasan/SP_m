@@ -1,6 +1,5 @@
 function [motorZeroy, q_rots] = calcQ()
-    clc;
-    hexapod = get_params();%#ok<*NASGU>
+    hexapod = get_params();
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
     base = hexapod.base;

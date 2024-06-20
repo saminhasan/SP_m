@@ -5,11 +5,11 @@ colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 % motor parameters
 % max T 0.4, continous T 0.27
 
-N = 1; % gear ratio
+N = 36; % gear ratio
 J_m = 12e-6*0; % motor inertia in motor axis frame
 
 %retrive simulation data
-sim_time = out.simout.Time; %#ok<NASGU>
+sim_time = out.simout.Time; 
 omegas = out.simout.Data(:, 2:4:22);
 alphas = out.simout.Data(:, (2:4:22)+1);
 taus_load = out.simout.Data(:, (2:4:22) + 2);
@@ -17,7 +17,7 @@ omegas_rpm = omegas * (60 / (2 * pi));
 
 
 tau_motor = J_m * alphas * N;
-tau_total = tau_motor + taus_load/ N;
+tau_total = tau_motor + taus_load / N;
 
 % plot motor T omega Nm and RPM
 % Define the time range

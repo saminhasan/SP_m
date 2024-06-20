@@ -14,10 +14,9 @@ time(T2/dT+1:end) = time(T2/dT+1:end) + 1;
 
 f = 1.5;
 %eps = 2.6e-3;
-eps = 0;
 [y_zero, ~] = calcQ();
 % Vectorized calculation of pose
-y = 0.045 * sin(2 * pi * 2 * f * time) + y_zero + eps; % y (vertical component)
+y = 0.045 * sin(2 * pi * 2 * f * time) + y_zero ; % y (vertical component)
 z = 0.05 * sin(2 * pi * f * time) * 0; % z (horizontal component, front back)
 x = 0.05 * sin(2 * pi * f * time) * 0; % x (horizontal component, left right)
 
