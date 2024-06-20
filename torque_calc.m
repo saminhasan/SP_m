@@ -6,18 +6,16 @@ colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 % max T 0.4, continous T 0.27
 
 N = 36; % gear ratio
-J_m = 12e-6*0; % motor inertia in motor axis frame
 
 %retrive simulation data
 sim_time = out.simout.Time; 
 omegas = out.simout.Data(:, 2:4:22);
-alphas = out.simout.Data(:, (2:4:22)+1);
+alphas = out.simout.Data(:, (2:4:22)+1); %#ok<NASGU>
 taus_load = out.simout.Data(:, (2:4:22) + 2);
 omegas_rpm = omegas * (60 / (2 * pi));
 
 
-tau_motor = J_m * alphas * N;
-tau_total = tau_motor + taus_load / N;
+tau_motor =  taus_load / N;
 
 % plot motor T omega Nm and RPM
 % Define the time range
@@ -38,7 +36,7 @@ plots = gobjects(1, 6);
 labels = cell(1, 6);
 for i = 1:6
     % Plot data for each motor
-    plots(i) = plot(omegas_rpm(:, i) * N, tau_total(:, i), 'Color', colors(i));
+    plots(i) = plot(omegas_rpm(:, i) * N, tau_motor(:, i), 'Color', colors(i));
     % plots(i) = plot(masked_omegas_rpm(:, i) * N, masked_t_total(:, i), 'Color', colors(i));
     labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
 end
@@ -62,7 +60,7 @@ hold on;
 time_plots = gobjects(1, 6); 
 for i = 1:6
     % Plot torque vs time for each motor
-    time_plots(i) = plot(sim_time, tau_total(:, i), 'Color', colors(i));
+    time_plots(i) = plot(sim_time, tau_motor(:, i), 'Color', colors(i));
     labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
 end
 
