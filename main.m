@@ -1,12 +1,16 @@
 clear all; clc; close all; %#ok<CLALL>
 dt = 1e-4;
+tf = 4;
 [motorData, pose] = generateMotorData(dt);
+[y_zero, q] = calcQ();
 sim_params
-out = sim('hp_v2.slx');
+
+out = sim('hp_v1.slx');
+% out = sim('hp_val.slx');
 % out = sim('hp_v10x2DCopy.slx');
 motion_comp(out, pose);
 torque_calc(out);
-disp(">>Done.")
+disp(">>Done")
 % % % taus_load = out.simout.Data(:, (2:4:22) + 2);
 % % % size(taus_load)
 % % % ans =

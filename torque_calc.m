@@ -57,7 +57,29 @@ ylabel('Torque (Nm)');
 title('Torque (Nm) vs Angular Velocity (RPM)');
 grid on;
 hold off;
+figure;
+hold on;
+time_plots = gobjects(1, 6); 
+for i = 1:6
+    % Plot torque vs time for each motor
+    time_plots(i) = plot(sim_time, tau_total(:, i), 'Color', colors(i));
+    labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
+end
 
+% Add legend with motor labels
+legend(time_plots, labels, 'Location', 'northwest');
+
+% Add y-lines for motor peaks and rated values
+yline(0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(-0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+yline(-0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+
+xlabel('Time (s)');
+ylabel('Torque (Nm)');
+title('Torque (Nm) vs Time (s)');
+grid on;
+hold off;
 % max(t_total)
 % min(t_total)
 % figure;

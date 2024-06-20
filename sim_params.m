@@ -62,7 +62,7 @@ K_e = K_r / N; % spring constant in motor axis frame
 
 % Control parameters
 w_traj = 3 * 2 * pi; % trajectory frequency
-w_n = 5 * w_traj; % controller bandwidth
+w_n = 10 * w_traj; % controller bandwidth
 zeta = 1; % damping ratio
 P = w_n^2 * J_e - K_e; % proportional gain
 D = 2 * zeta * w_n * J_e; % derivative gain

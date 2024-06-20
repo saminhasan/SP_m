@@ -6,7 +6,7 @@ base = hexapod.base;
 platform = hexapod.platform;
 
 y_coords = zeros(6,1);
-q_rots = zeros(6, 4);
+
 % *****************************
 % calculate motor angles for 12
 % *****************************
@@ -18,7 +18,7 @@ thetax=thetaz+pi/2;
 ux = [sin(thetax),0,cos(thetax)];
 uy = [0,1,0]; 
 uz = [sin(thetaz),0,cos(thetaz)];
-u = [ux; uy; uz]';
+% u = [ux; uy; uz]';
 
 % ----------------------------------
 % Calculate the tip coordinate in the global frame
@@ -27,27 +27,44 @@ P12Lh = base.P12L + excenter.R * ux';
 dist_xz = sqrt((platform.P12L(1) - P12Lh(1))^2 + (platform.P12L(3) - P12Lh(3))^2);
 % Update the y-coordinate of platform.P12L
 y_coords(1) = sqrt(coupler.L^2 - dist_xz^2);
+U = [1, 0, 0];
 % %------------------------------
 % %------------------------------
 platform.P12L(2) = y_coords(1);
+platform.P12L
 bp = platform.P12L - P12Lh;
-bp = u \ bp;
-U = [1, 0, 0]; % body frame
 % Calculate the cross product
 cross_product = cross(U, bp);
+
+% Calculate the dot product
+dot_product = dot(U, bp);
+
+% Calculate the magnitudes of the vectors
+magnitude_u = norm(U);
+magnitude_bp = norm(bp);
+dot_product
+magnitude_u
+magnitude_bp
 % Calculate the angle in radians
-angle_radians = acos(dot(U, bp) / (norm(U) * norm(bp)));
+angle_radians = acos(dot_product / (magnitude_u * magnitude_bp));
+
 % Normalize the axis of rotation (cross product)
 axis_of_rotation = cross_product / norm(cross_product);
+
 % Construct the quaternion
 qw = cos(angle_radians / 2);
 qx = axis_of_rotation(1) * sin(angle_radians / 2);
 qy = axis_of_rotation(2) * sin(angle_radians / 2);
 qz = axis_of_rotation(3) * sin(angle_radians / 2);
+
 quaternion = [qw, qx, qy, qz];
+
 % Normalize the quaternion
 quaternion = quaternion / norm(quaternion);
-q_rots(1,:) = quaternion;
+
+% Display the quaternion
+disp('Normalized Quaternion:');
+disp(quaternion);
 % %------------------------------
 % %------------------------------
 % platform.P12L(2) = y_coords(1);
@@ -77,9 +94,8 @@ P12Rh = base.P12R - excenter.R * ux';
 dist_xz = sqrt((platform.P12R(1) - P12Rh(1))^2 + (platform.P12R(3) - P12Rh(3))^2);
 % Update the y-coordinate of platform.P12L
 y_coords(2)  = sqrt(coupler.L^2 - dist_xz^2) ;
+% ----------------------------------
 
-% %------------------------------
-% %------------------------------
 
 % *****************************
 % calculate motor angles for 23
