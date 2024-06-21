@@ -1,11 +1,10 @@
-function [] = torque_calc(out)
+function [] = torque_calc(out, N)
 % Define colors for different motors
 colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
 % motor parameters
 % max T 0.4, continous T 0.27
 
-N = 36; % gear ratio
 
 %retrive simulation data
 sim_time = out.simout.Time; 
@@ -15,7 +14,7 @@ taus_load = out.simout.Data(:, (2:4:22) + 2);
 omegas_rpm = omegas * (60 / (2 * pi));
 
 
-tau_motor =  taus_load / N;
+tau_motor =  taus_load / N; % torque required in motor frame
 
 % plot motor T omega Nm and RPM
 % Define the time range

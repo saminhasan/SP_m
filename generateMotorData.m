@@ -1,10 +1,10 @@
-function [motorData, pose] = generateMotorData(dT)
+function [motorData, pose] = generateMotorData(dT, tF)
 if nargin < 1
     dT = 1e-4; % Default value for dT if not provided
 end
 
 % Time setup
-time0 = (0:dT:4)';
+time0 = (0:dT:tF)';
 time = filter(dT/2, [1, dT/2-1], time0); %#ok<NASGU>
 T1 = 1;
 T2 = 3;

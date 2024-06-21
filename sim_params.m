@@ -37,33 +37,30 @@ magenta = [1 0 1];
 
 % Physical constants and parameters
 platform_mass = 20; % kg
-height = excenter.R; % Height of the cylinder in meters
-radius = 0.01; % Radius of the cylinder in centimeters
-rho = 7850; % kg/m^3
+height = excenter.R; % Height of the cylinder in meters 
+radius = 0.01; % Radius of the cylinder in meters / width of excenter arm and coupler.
+rho = 7850; % kg/m^3 density of steel
 g = 9.80665; % acceleration due to gravity, m/s^2
-coupler_mass = coupler.L * radius^2 * rho; % 0.219800000000000 kg 
-excenter_mass = excenter.R * radius^2 * rho; % 0.062800000000000 kg
-
+coupler_mass = coupler.L * radius^2 * rho;
+excenter_mass = excenter.R * radius^2 * rho;
 % Mechanical parameters
 N = 36; % gear ratio
-J_m = 12e-6; % motor inertia in motor axis frame
+J_m = 12e-6; % motor inertia in motor frame
 J_mr = J_m*N^2;
-% Calculations involving excenter.R
-J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot axis frame
-% tau_0 = ((platform_mass / 6) * g * excenter.R^2); % torque due to gravity % zeroAngleTorqueCalc();
-tau_0 = zeroAngleTorqueCalc(platform_mass, excenter.R, coupler_mass, excenter_mass, g); % torque due to gravity % zeroAngleTorqueCalc();
+J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot frame
+tau_0 = ((platform_mass / 6 + coupler_mass) * excenter.R * g ) + (excenter_mass * g * excenter.R/2);
 
 % Motor spring properties
-motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_mr) * (2 * pi * 3)^2); % spring constant in motor axis frame
+motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_mr) * (2 * pi * 3)^2); % spring constant in motor  frame
 motor_spring_offset = (tau_0 / motor_spring_constant); % spring offset
 
 % Spring constants
-K_r = motor_spring_constant; % spring constant in robot axis frame
-K_m = K_r / N; % spring constant in motor axis frame
+K_r = motor_spring_constant; % spring constant in robot  frame
+K_m = K_r / N; % spring constant in motor  frame
 
 % Equivalent inertia and spring constants in robot frame
-J_e = (J_mr + J_r); % equivalent inertia in motor axis frame
-K_e = K_r; % spring constant in motor axis frame
+J_e = (J_mr + J_r); % equivalent inertia in motor  frame
+K_e = K_r; % spring constant in motor  frame
 
 % Control parameters
 w_traj = 3 * 2 * pi; % trajectory frequency
@@ -75,9 +72,6 @@ w_f = w_n * 10; % filter frequency
 
 
 
-% Calculate the density
-density_cyl = (2 * (12e-6 * 36^2)) / (pi * radius^4 * height);% 12375888.37482578121125698089599609375; kg / m^3 for N = 36
+% Calculate the density for cylinder which acts as motor inertia
+density_cyl = (2 * (12e-6 * 36^2)) / (pi * radius^4 * height);
 
-%
-% Display the result
-% fprintf('The density of the cylinder is %.64f kg/m^3\n', density_cyl);
