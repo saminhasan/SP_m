@@ -4,6 +4,9 @@ excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
 platform = hexapod.platform;
+% rotation order - YZX - yrp, if z azis was up it would have been - ryp
+
+
 
 % rotate platform around Y axis by pose.Ry radians
 platform.P12L = (platform.P12L'*roty(pose.Ry/pi*180))';
@@ -25,6 +28,7 @@ platform.P23R = (platform.P23R'*rotz(pose.Rz/pi*180))';
 platform.P31L = (platform.P31L'*rotz(pose.Rz/pi*180))';
 platform.P31R = (platform.P31R'*rotz(pose.Rz/pi*180))';
 
+
 % rotate platform around X axis by pose.Rx radians
 platform.P12L = (platform.P12L'*rotx(pose.Rx/pi*180))';
 platform.P12R = (platform.P12R'*rotx(pose.Rx/pi*180))';
@@ -34,7 +38,6 @@ platform.P23R = (platform.P23R'*rotx(pose.Rx/pi*180))';
 
 platform.P31L = (platform.P31L'*rotx(pose.Rx/pi*180))';
 platform.P31R = (platform.P31R'*rotx(pose.Rx/pi*180))';
-
 
 % % add platfprm center
 platform.P12L = platform.P12L+[pose.x;pose.y; pose.z];

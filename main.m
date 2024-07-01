@@ -1,11 +1,12 @@
-clear all; clc; close all; %#ok<CLALL>
+ clear all; clc; close all; %#ok<CLALL>
 
 % Simulation parameters
 dt = 1e-4;
-tf = 4;
-
+tf = 45;
+ts = 1/ 240;
 % Generate motor data and initial pose
-[motorData, pose] = generateMotorData(dt,tf);
+% [motorData, pose] = generateMotorData(dt,tf);
+[motorData, pose] = rw(ts);
 [y_zero, q] = calcQ(); % returns y_zero, for which all motor angles are zero and returns the quat of the couplers 
 
 % Hexapod components
@@ -83,8 +84,9 @@ w_f = w_n * 10; % filter frequency
 density_cyl = (2 * (12e-6 * 36^2)) / (pi * radius^4 * height);
 
 % Run the simulation and perform calculations
-out = sim('hp_v2.slx');
+out = sim('hp_v1.slx');
+% out = sim('hp_v2.slx');
 motion_comp(out, pose);
 torque_calc(out, N);
-
+% 
 disp(">>Done")
