@@ -21,6 +21,16 @@ for i = 1:length(pose)
     time0(i) = pose(i).time0;
 end
 
+fft_rx = abs(fft(Rx) )* 180/pi /  length(Rx) * 2 ;
+fft_ry = abs(fft(Ry))* 180/pi /  length(Ry)* 2 ;
+fft_rz = abs(fft(Rz))* 180/pi /  length(Rz)* 2 ;
+fft_f = (0: 1 : length(fft_rx) - 1) / length(fft_rx) * 240;
+figure;
+hold on
+plot(fft_f, fft_rx, '-r');
+plot(fft_f, fft_ry, '-g');
+plot(fft_f, fft_rz, '-b');
+hold off
 figure;
 subplot(3,2,1);
 hold on;

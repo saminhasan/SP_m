@@ -2,11 +2,11 @@
 
 % Simulation parameters
 dt = 1e-4;
-tf = 45;
+tf = 4;
 ts = 1/ 240;
 % Generate motor data and initial pose
-% [motorData, pose] = generateMotorData(dt,tf);
-[motorData, pose] = rw(ts);
+[motorData, pose] = generateMotorData(dt,tf);
+% [motorData, pose] = rw(ts);
 [y_zero, q] = calcQ(); % returns y_zero, for which all motor angles are zero and returns the quat of the couplers 
 
 % Hexapod components
@@ -61,7 +61,7 @@ J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot fr
 tau_0 = ((platform_mass / 6 + coupler_mass) * excenter.R * g ) + (excenter_mass * g * excenter.R / 2);
 
 % Motor spring properties
-motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_mr) * (2 * pi * 3)^2); % spring constant in motor frame
+motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_mr) * (2 * pi * 2)^2); % spring constant in motor frame
 motor_spring_offset = (tau_0 / motor_spring_constant); % spring offset
 
 % Spring constants
