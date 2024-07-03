@@ -1,4 +1,4 @@
-function [motorData, pose] = generateMotorDataFromFile(ts)
+function [motorData, pose] = generateMotorDataFromTrajFile(ts)
 [y_zero, ~] = calcQ();
 % filename = 'pose_walk_centered.txt';
 filename = 'centered_array.txt';

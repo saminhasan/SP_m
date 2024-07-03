@@ -1,5 +1,5 @@
-function [motorData, pose] = rw(ts)
-
+function [motorData, pose, tf, ts] = rw()
+    ts = 1/240;
     [y_zero, ~] = calcQ();
     file_name = 'Traj.csv';
     
@@ -7,7 +7,7 @@ function [motorData, pose] = rw(ts)
     data = readtable(file_name, 'HeaderLines', 1);
     % Number of samples
     N = size(data, 1);
-    tF = N * ts;
+    tf = N * ts;
     % Extracting the coordinates for each marker
     T1 = [data.T1Y, data.T1Z, data.T1X] / 1000;
     T10 = [data.T10Y, data.T10Z, data.T10X] / 1000;
@@ -46,7 +46,7 @@ function [motorData, pose] = rw(ts)
     Rz_centered = Rz - mean_Rz;
     
     % Generate time vector
-    time0 = linspace(0, tF, N)';
+    time0 = linspace(0, tf, N)';
     
     % Preallocate pose struct array
     pose = struct('x', num2cell(zeros(N,1)), ...

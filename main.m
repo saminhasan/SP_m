@@ -1,12 +1,9 @@
  clear all; clc; close all; %#ok<CLALL>
 
-% Simulation parameters
-dt = 1e-4;
-tf = 4;
-ts = 1/ 240;
 % Generate motor data and initial pose
-[motorData, pose] = generateMotorData(dt,tf);
-% [motorData, pose] = rw(ts);
+% [motorData, pose, tf, ts] = generateMotorData();
+% [motorData, pose, tf, ts] = rw();
+[motorData, pose, tf, ts] = rr();
 [y_zero, q] = calcQ(); % returns y_zero, for which all motor angles are zero and returns the quat of the couplers 
 
 % Hexapod components
