@@ -33,14 +33,12 @@ function [motorData, pose, tf, ts] = rr()
     for i = 1:num_rows
         index = mod(i-1, length(time_sec)) + 1;
         extended_time_sec(i) = (i-1) * ts;
-        extended_z_measured_deg(i) = z_measured_deg(index);
-        extended_x_measured_deg(i) = x_measured_deg(index);
-        extended_y_measured_deg(i) = y_measured_deg(index);
-        extended_z_measured_m(i) = z_measured_m(index);
+        extended_z_measured_deg(i) = z_measured_deg(index) - mean(z_measured_deg);
+        extended_x_measured_deg(i) = x_measured_deg(index) - mean(x_measured_deg);
+        extended_y_measured_deg(i) = y_measured_deg(index) - mean(y_measured_deg);
+        extended_z_measured_m(i) = z_measured_m(index) - mean(z_measured_m);
     end
 
-    mean_z = mean(extended_z_measured_m);
-    extended_z_measured_m = extended_z_measured_m - mean_z;
     % Preallocate motorAngles array
     motorAngles = zeros(length(extended_time_sec), 6); 
     pose(length(extended_time_sec)) = struct('x', [], 'y', [], 'z', [], 'Rx', [], 'Ry', [], 'Rz', [], 'time0', []);

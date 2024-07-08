@@ -2,8 +2,8 @@
     tf = 7.5;
     
     % Specify the filename
-    filename = 'Rots_raw.csv'; 
-    % filename = 'Rots_fund.csv'; 
+    % filename = 'Rots_raw.csv'; 
+    filename = 'Rots_fund.csv'; 
 
     % Read the CSV file
     data = readtable(filename, 'CommentStyle','#');
