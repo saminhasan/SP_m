@@ -1,12 +1,13 @@
 function [motorData, pose, tf, ts] = rr()
     [y_zero, ~] = calcQ();
-    tf = 4;
+    tf = 7.5;
     
     % Specify the filename
-    filename = 'Rots.csv'; 
+    filename = 'Rots_raw.csv'; 
+    % filename = 'Rots_fund.csv'; 
 
     % Read the CSV file
-    data = readtable(filename);
+    data = readtable(filename, 'CommentStyle','#');
 
     % Extract data into variables
     time_sec = data{:, 'time'};
@@ -30,7 +31,7 @@ function [motorData, pose, tf, ts] = rr()
 
     % Fill the preallocated arrays
     for i = 1:num_rows
-        index = mod(i-1, length(time_sec)) + 1; % Using modulo to loop through the original data
+        index = mod(i-1, length(time_sec)) + 1;
         extended_time_sec(i) = (i-1) * ts;
         extended_z_measured_deg(i) = z_measured_deg(index);
         extended_x_measured_deg(i) = x_measured_deg(index);
