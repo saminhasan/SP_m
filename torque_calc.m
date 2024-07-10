@@ -54,6 +54,7 @@ ylabel('Torque (Nm)');
 title('Torque (Nm) vs Angular Velocity (RPM)');
 grid on;
 hold off;
+
 figure;
 hold on;
 time_plots = gobjects(1, 6); 

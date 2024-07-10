@@ -1,0 +1,36 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the smooth step function
+def smoothstep(t, t1=0, t2=1):
+    # Ensure t1 and t2 are scalars
+    t1 = np.asarray(t1)
+    t2 = np.asarray(t2)
+    
+    # Calculate the k values
+    k = np.maximum(0, np.minimum(1, (t - t1) / (t2 - t1)))
+    
+    # Calculate the smooth step function values
+    return k**2 * (3 - 2 * k)
+
+# Parameters
+t1 = 2  # Start time
+t2 = 8  # End time
+t = np.linspace(0, 10, 400)  # Time vector
+
+# Calculate the sine wave
+sine_wave = np.sin(t)
+
+# Apply the smooth step function to the sine wave
+smooth_sine_wave = sine_wave * smoothstep(t, t1, t2)
+
+# Plot the original sine wave and the smooth stepped sine wave
+plt.figure(figsize=(10, 5))
+plt.plot(t, sine_wave, label='Original Sine Wave', linestyle='dashed')
+plt.plot(t, smooth_sine_wave, label='Smooth Stepped Sine Wave', linewidth=2)
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.title('Smooth Stepped Sine Wave')
+plt.legend()
+plt.grid(True)
+plt.show()

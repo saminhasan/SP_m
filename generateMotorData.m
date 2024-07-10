@@ -14,22 +14,22 @@ f = 1/0.75;
 %eps = 2.6e-3;
 [y_zero, ~] = calcQ();
 % Vectorized calculation of pose
-z = 0.05 * sin(2 * pi * f * time) * 0; % z (horizontal component, front back)
-x = 0.05 * sin(2 * pi * f * time) * 0; % x (horizontal component, left right)
-
-y = 0.045 * sin(2 * pi * 2 * f * (time + 0.1)) + y_zero ; % y (vertical component)
-
-Ry = 15.43 * pi / 180 * sin(2 * pi * f * (time - 0.2));
-Rz = 3 * pi / 180 * sin(2 * pi * f * (time + 0.1));
-Rx = 2.5 * pi / 180 * sin(2 * pi * 2 * f * (time + 0.1));
-% % Vectorized calculation of pose
-% y = 0.045 * sin(2 * pi * 2 * f * time) + y_zero ; % y (vertical component)
 % z = 0.05 * sin(2 * pi * f * time) * 0; % z (horizontal component, front back)
 % x = 0.05 * sin(2 * pi * f * time) * 0; % x (horizontal component, left right)
 % 
-% Ry = 3.5 * pi / 180 * sin(2 * pi * f * time);
-% Rz = 0.5 * pi / 180 * sin(2 * pi * f * time);
-% Rx = 0.86 * pi / 180 * sin(2 * pi * 2 * f * time);
+% y = 0.045 * sin(2 * pi * 2 * f * (time + 0.1)) + y_zero ; % y (vertical component)
+% 
+% Ry = 15.43 * pi / 180 * sin(2 * pi * f * (time - 0.2));
+% Rz = 3 * pi / 180 * sin(2 * pi * f * (time + 0.1));
+% Rx = 2.5 * pi / 180 * sin(2 * pi * 2 * f * (time + 0.1));
+% % Vectorized calculation of pose
+y = 0.045 * sin(2 * pi * 2 * f * time) + y_zero ; % y (vertical component)
+z = 0.05 * sin(2 * pi * f * time) * 0; % z (horizontal component, front back)
+x = 0.05 * sin(2 * pi * f * time) * 0; % x (horizontal component, left right)
+
+Ry = 3.5 * pi / 180 * sin(2 * pi * f * time);
+Rz = 0.5 * pi / 180 * sin(2 * pi * f * time);
+Rx = 0.86 * pi / 180 * sin(2 * pi * 2 * f * time);
 
 % Preallocate motorAngles array
 motorAngles = zeros(length(time0), 6); 

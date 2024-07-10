@@ -58,8 +58,8 @@ J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot fr
 tau_0 = ((platform_mass / 6 + coupler_mass) * excenter.R * g ) + (excenter_mass * g * excenter.R / 2);
 
 % Motor spring properties
-motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_mr) * (2 * pi * 2)^2); % spring constant in motor frame
-motor_spring_offset = (tau_0 / motor_spring_constant); % spring offset
+motor_spring_constant = ((((platform_mass / 6) * excenter.R^2) + J_mr) * (2 * pi * 2)^2); % spring constant in motor frame %%%%%%%%%%%
+motor_spring_offset = (tau_0 / motor_spring_constant); % spring offset%%%%%%%
 
 % Spring constants
 K_r = motor_spring_constant; % spring constant in robot frame
@@ -80,10 +80,12 @@ w_f = w_n * 10; % filter frequency
 % Calculate the density for cylinder which acts as motor inertia
 density_cyl = (2 * (12e-6 * 36^2)) / (pi * radius^4 * height);
 
+disp(">>Starting Simulation");
 % Run the simulation and perform calculations
-out = sim('hp_v1.slx');
+out = sim('hp_v4.slx');
 % out = sim('hp_v2.slx');
-motion_comp(out, pose);
-torque_calc(out, N);
+% motion_comp(out, pose);
+% torque_calc(out, N);
 % 
-disp(">>Done")
+disp(">>Done.")
+% torque_calc_3d(out, N);

@@ -59,13 +59,15 @@ function [motorData, pose, tf, ts] = rw()
     
     % Preallocate motorAngles array
     motorAngles = zeros(N, 6);
+    ramp_up = smoothstep(time0, 0, 0.5);
+    ramp_down = 1 - smoothstep(time0, tf-0.5, tf);
     for i = 1:N
-        pose(i).x = (cg_centered(i, 1))*0;
-        pose(i).y = (cg_centered(i, 2) + y_zero);
-        pose(i).z = cg_centered(i, 3)*0;
-        pose(i).Rx = Rx_centered(i);
-        pose(i).Ry = Ry_centered(i);
-        pose(i).Rz = Rz_centered(i);
+        pose(i).x = cg_centered(i, 1)* ramp_up(i) * ramp_down(i);
+        pose(i).y = (cg_centered(i, 2)* ramp_up(i) * ramp_down(i)) + y_zero;
+        pose(i).z = cg_centered(i, 3)* ramp_up(i) * ramp_down(i);
+        pose(i).Rx = Rx_centered(i)* ramp_up(i) * ramp_down(i);
+        pose(i).Ry = Ry_centered(i)* ramp_up(i) * ramp_down(i);
+        pose(i).Rz = Rz_centered(i)* ramp_up(i) * ramp_down(i);
         pose(i).time0 = time0(i);
     
         % Call calcMotorAngles with the current pose

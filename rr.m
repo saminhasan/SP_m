@@ -42,20 +42,36 @@ function [motorData, pose, tf, ts] = rr()
     % Preallocate motorAngles array
     motorAngles = zeros(length(extended_time_sec), 6); 
     pose(length(extended_time_sec)) = struct('x', [], 'y', [], 'z', [], 'Rx', [], 'Ry', [], 'Rz', [], 'time0', []);
+    % for i = 1:length(extended_time_sec)
+    %     % Store values in the pose struct array
+    %     pose(i).x = 0;
+    %     pose(i).y = extended_z_measured_m(i) + y_zero;
+    %     pose(i).z = 0;
+    %     pose(i).Rx = deg2rad(extended_y_measured_deg(i));
+    %     pose(i).Ry = deg2rad(extended_z_measured_deg(i));
+    %     pose(i).Rz = deg2rad(extended_x_measured_deg(i));
+    %     pose(i).time0 = extended_time_sec(i);
+    % 
+    %     % Call calcMotorAngles with the current pose
+    %     motorAngles(i, :) = calcMotorAngles(pose(i));
+    % end
+    % Calculate smoothstep values for the ramp up and ramp down
+    ramp_up = smoothstep(extended_time_sec, 0, 0.5);
+    ramp_down = 1 - smoothstep(extended_time_sec, tf-0.5, tf);
+    % Apply the smoothing to the data
     for i = 1:length(extended_time_sec)
         % Store values in the pose struct array
         pose(i).x = 0;
-        pose(i).y = extended_z_measured_m(i) + y_zero;
+        pose(i).y = (extended_z_measured_m(i) * ramp_up(i) * ramp_down(i)) + + y_zero;
         pose(i).z = 0;
-        pose(i).Rx = deg2rad(extended_y_measured_deg(i));
-        pose(i).Ry = deg2rad(extended_z_measured_deg(i));
-        pose(i).Rz = deg2rad(extended_x_measured_deg(i));
+        pose(i).Rx = deg2rad(extended_y_measured_deg(i)) * ramp_up(i) * ramp_down(i);
+        pose(i).Ry = deg2rad(extended_z_measured_deg(i)) * ramp_up(i) * ramp_down(i);
+        pose(i).Rz = deg2rad(extended_x_measured_deg(i)) * ramp_up(i) * ramp_down(i);
         pose(i).time0 = extended_time_sec(i);
     
         % Call calcMotorAngles with the current pose
         motorAngles(i, :) = calcMotorAngles(pose(i));
     end
-
 motorData = [extended_time_sec, -motorAngles(:,1), -motorAngles(:,2), ...
              -motorAngles(:,3), -motorAngles(:,4), ...
              -motorAngles(:,5), -motorAngles(:,6)];
