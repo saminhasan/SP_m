@@ -68,7 +68,11 @@ K_m = K_r / N; % spring constant in motor frame
 % Equivalent inertia and spring constants in robot frame
 J_e = (J_mr + J_r); % equivalent inertia in motor frame
 K_e = K_r; % spring constant in motor frame
-
+% Linear Sping
+M = (platform_mass + 6*J_m* (N/excenter.R)^2);
+f_res = 2.4*1.4;
+K_l = 1e-8*(2 * pi * f_res)^2 * M;
+dYY = platform_mass * g / K_l;
 % Control parameters
 w_traj = 3 * 2 * pi; % trajectory frequency
 w_n = 5 * w_traj; % controller bandwidth
@@ -84,8 +88,8 @@ disp(">>Starting Simulation");
 % Run the simulation and perform calculations
 out = sim('hp_v4.slx');
 % out = sim('hp_v2.slx');
-% motion_comp(out, pose);
-% torque_calc(out, N);
+motion_comp(out, pose);
+torque_calc(out, N);
 % 
 disp(">>Done.")
-% torque_calc_3d(out, N);
+torque_calc_3d(out, N);
