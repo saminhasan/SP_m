@@ -1,9 +1,9 @@
  clear all; clc; close all; %#ok<CLALL>
 
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData();
+[motorData, pose, tf, ts] = generateMotorData();
 % [motorData, pose, tf, ts] = rw();
-[motorData, pose, tf, ts] = rr();
+% [motorData, pose, tf, ts] = rr();
 [y_zero, q] = calcQ(); % returns y_zero, for which all motor angles are zero and returns the quat of the couplers 
 
 % Hexapod components
@@ -70,8 +70,8 @@ J_e = (J_mr + J_r); % equivalent inertia in motor frame
 K_e = K_r; % spring constant in motor frame
 % Linear Sping
 M = (platform_mass + 6*J_m* (N/excenter.R)^2);
-f_res = 2.4*1.4;
-K_l = 1e-8*(2 * pi * f_res)^2 * M;
+f_resonance = 2.4*1.4;
+K_l = 1e-8*(2 * pi * f_resonance)^2 * M;
 dYY = platform_mass * g / K_l;
 % Control parameters
 w_traj = 3 * 2 * pi; % trajectory frequency

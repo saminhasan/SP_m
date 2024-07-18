@@ -70,7 +70,7 @@ function [motorData, pose, tf, ts] = rr()
         pose(i).time0 = extended_time_sec(i);
     
         % Call calcMotorAngles with the current pose
-        motorAngles(i, :) = calcMotorAngles(pose(i));
+        [motorAngles(i, :),~] = calcMotorAngles(pose(i));
     end
 motorData = [extended_time_sec, -motorAngles(:,1), -motorAngles(:,2), ...
              -motorAngles(:,3), -motorAngles(:,4), ...

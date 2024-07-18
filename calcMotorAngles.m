@@ -1,4 +1,4 @@
-function motorAngles = calcMotorAngles(pose)
+function [motorAngles, hexapod] = calcMotorAngles(pose)
 hexapod = get_params();
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
@@ -167,3 +167,4 @@ theta31R = theta - pi;
 
 motorAngles = [theta12L,theta12R,theta23L,theta23R,theta31L,theta31R];
 
+end

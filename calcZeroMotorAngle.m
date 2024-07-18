@@ -1,4 +1,4 @@
-function motorZeroy = calcZeroMotorAngle()
+function [motorZeroy, tips]= calcZeroMotorAngle()
 hexapod = get_params();%#ok<*NASGU>
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
@@ -145,7 +145,7 @@ dist_xz = sqrt((platform.P31R(1) -P31Rh(1))^2 + (platform.P31R(3) - P31Rh(3))^2)
 y_coords(6) = sqrt(coupler.L^2 - dist_xz^2);
 
 % ----------------------------------
-
+tips = [P12Lh, P12Rh, P23Lh, P23Rh, P31Lh, P31Rh];
 tolerance = 1e-12;
 if all(abs(diff(y_coords)) < tolerance)
     % fprintf('The value of y_zero is: %.64f\n', mean(y_coords));

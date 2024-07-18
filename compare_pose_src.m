@@ -21,8 +21,8 @@ Rx = 2.5 * pi / 180 * sin(2 * pi * 2 * f * (time + 0.1));
 [y_zero, ~] = calcQ();
 
 % Specify the filename
-% filename = 'Rots_raw.csv'; 
-filename = 'Rots_fund.csv'; 
+filename = 'Rots_raw.csv'; 
+% filename = 'Rots_fund.csv'; 
 
 % Read the CSV file
 data = readtable(filename, 'CommentStyle','#');

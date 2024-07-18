@@ -46,7 +46,7 @@ for i = 1:length(time0)
     pose(i).time0 = time0(i);
 
     % Call calcMotorAngles with the current pose
-    motorAngles(i, :) = calcMotorAngles(pose(i));
+    [motorAngles(i, :),~] = calcMotorAngles(pose(i));
 end
 
 motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...
