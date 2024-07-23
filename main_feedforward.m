@@ -1,11 +1,11 @@
 clear all; clc; close all; %#ok<CLALL>
 
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData();
+[motorData, pose, tf, ts] = generateMotorData();
 % [motorData, pose, tf, ts] = rw();
-[motorData, pose, tf, ts] = rr();
-f_resonance = 2/0.75; %
-% f_resonance = find_fft_peaks(pose);
+% [motorData, pose, tf, ts] = rr();
+f_resonance = 2/0.75; % get this from analyzing trajectory input later on.
+
 % calculate, for which all motor angles are zero
 % and returns the quat of the couplers for the same condition.
 [y_zero, q] = calcQ();
@@ -96,7 +96,7 @@ J_e = (J_mr + J_r);
 linear_spring_length = 10;
 M_eq = (platform_mass+ 6*coupler_mass + 6 * excenter_mass/2 + 6 * J_m * (N/excenter.R)^2) ;
 linear_spring_constant = (2 * pi * f_resonance)^2 * M_eq;
-linear_spring_offset = (((platform_mass + 6*coupler_mass+ 6 * excenter_mass/2) * g) / linear_spring_constant)/2;
+linear_spring_offset = ((platform_mass + 6*coupler_mass+ 6 * excenter_mass/2) * g) / linear_spring_constant;
 
 K_e = angular_spring_constant;
 % Control parameters
@@ -107,10 +107,14 @@ P = w_n^2 * J_e - K_e; % proportional gain
 D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency
 
-
-model_name = 'hp_v4.slx';
+out_ff = sim('hp_v3.slx');
+taus_load = out_ff.simout.Data(:, (2:4:22) + 2);
+sim_time = out_ff.simout.Time; 
+TData = [sim_time, taus_load(:,1), taus_load(:,2), ...
+             taus_load(:,3), taus_load(:,4), ...
+             taus_load(:,5), taus_load(:,6)];
+model_name = 'hp_v5.slx';
 fprintf('>> Starting Simulation: %s\n', model_name);
-
 % Run the simulation and perform calculations
 out = sim(model_name);
 % out = sim('hp_v2.slx');
@@ -119,3 +123,17 @@ torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
 % torque_calc_3d(out, N, rated_torque, peak_torque);
 
+% RMSE and MAE Metrics:
+% X Position: RMSE = 0.0000094654688257, MAE = 0.0000061013946351
+% Y Position: RMSE = 0.0006645205011166, MAE = 0.0005285779668971
+% Z Position: RMSE = 0.0000381142982344, MAE = 0.0000287122622161
+% Rx Orientation: RMSE = 0.0003135742623241, MAE = 0.0002445348254135
+% Ry Orientation: RMSE = 0.0039012770508728, MAE = 0.0025396775950113
+% Rz Orientation: RMSE = 0.0005090964860383, MAE = 0.0003941600531083
+% RMSE and MAE Metrics:
+% X Position: RMSE = 0.0000003437006733, MAE = 0.0000002859292928
+% Y Position: RMSE = 0.0000231071527033, MAE = 0.0000178826840992
+% Z Position: RMSE = 0.0000019229758779, MAE = 0.0000015350030826
+% Rx Orientation: RMSE = 0.0000221474234727, MAE = 0.0000169904344509
+% Ry Orientation: RMSE = 0.0001204115156557, MAE = 0.0000940398448747
+% Rz Orientation: RMSE = 0.0004236867055703, MAE = 0.0003355090660108

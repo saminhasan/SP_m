@@ -1,14 +1,14 @@
-clear all; clc; close all; %#ok<CLALL>
+ clear all; clc; close all; %#ok<CLALL>
 
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData();
+[motorData, pose, tf, ts] = generateMotorData();
 % [motorData, pose, tf, ts] = rw();
-[motorData, pose, tf, ts] = rr();
-f_resonance = 2/0.75; %
-% f_resonance = find_fft_peaks(pose);
-% calculate, for which all motor angles are zero
+% [motorData, pose, tf, ts] = rr();
+f_resonance = 2/0.75; % get this from analyzing trajectory input later on.
+
+% calculate, for which all motor angles are zero 
 % and returns the quat of the couplers for the same condition.
-[y_zero, q] = calcQ();
+[y_zero, q] = calcQ(); 
 % Hexapod components
 hexapod = get_params();
 excenter = hexapod.excenter;
@@ -24,7 +24,7 @@ base_points = [
     base.P23R(3), base.P23R(1);
     base.P31L(3), base.P31L(1);
     base.P31R(3), base.P31R(1)
-    ];
+];
 
 % Platform points
 platform_points = [
@@ -34,7 +34,7 @@ platform_points = [
     platform.P23R(3), platform.P23R(1);
     platform.P31L(3), platform.P31L(1);
     platform.P31R(3), platform.P31R(1)
-    ];
+];
 
 % Define colors for different servo arms
 red = [1 0 0];
@@ -59,12 +59,12 @@ J_m = 12e-6; % motor inertia in motor frame
 g = 9.80665; % acceleration due to gravity, m/s^2
 rho = 7850; % kg/m^3 density of steel
 platform_mass = 20; % kg
-% set up cylinder height same as excenter arm (arbitrary value),
-% density as calculated to simulate reflected
-height = excenter.R;
+% set up cylinder height same as excenter arm (arbitrary value), 
+% density as calculated to simulate reflected 
+height = excenter.R; 
 % Radius of the cylinder in meters / width of excenter arm and coupler
 % arbitrary choice for simulation visualization.
-radius = 0.01;
+radius = 0.01; 
 % Calculate the density for cylinder which acts as motor inertia
 % in robot frame
 density_cyl = (2 * (J_m * N^2)) / (pi * radius^4 * height);
@@ -80,25 +80,26 @@ J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot fr
 % holding torque required to hold platform at zero motor angle using angular springs.
 % tau_0 = ((platform_mass / 6) * excenter.R * g ) + (excenter_mass * g * excenter.R / 2);
 tau_0 = ((platform_mass / 6) * g * excenter.R) + (excenter_mass * g * excenter.R / 2) ...
-    + (coupler_mass* g * excenter.R);
++ (coupler_mass* g * excenter.R);
 % angular spring constant in robot frame to maintain resonance given
-% equivalent inertia in robot frame
-angular_spring_constant = ((((platform_mass / 6) * excenter.R^2) + (coupler_mass * excenter.R^2) ...
-    + (excenter_mass * (excenter.R/2)^2) + J_mr) * (2 * pi * f_resonance)^2);
+% equivalent inertia in robot frame. maybe add coupler  and excenter weight
+% but those are negligible compared to rest of the componenets.s
+angular_spring_constant = ((((platform_mass / 6) * excenter.R^2) + + + J_mr) * (2 * pi * f_resonance)^2);
 % angular offset needed to genarate holding torque.
 angular_spring_offset = (tau_0 / angular_spring_constant);
 
 % total inertia in robot frame
 J_e = (J_mr + J_r);
 % Linear Spring
-% any length should work, however longer spring
+% any length should work, however bigger spring 
 % will reduce affect any axis that is not y
 linear_spring_length = 10;
-M_eq = (platform_mass+ 6*coupler_mass + 6 * excenter_mass/2 + 6 * J_m * (N/excenter.R)^2) ;
+M_eq = (platform_mass+ 6*coupler_mass + 6 * excenter_mass/2 + 6*J_m* (N/excenter.R)^2) ;
 linear_spring_constant = (2 * pi * f_resonance)^2 * M_eq;
-linear_spring_offset = (((platform_mass + 6*coupler_mass+ 6 * excenter_mass/2) * g) / linear_spring_constant)/2;
+linear_spring_offset = ((platform_mass + 6*coupler_mass+ 6 * excenter_mass/2) * g) / linear_spring_constant;
 
 K_e = angular_spring_constant;
+% K_e = linear_spring_constant;
 % Control parameters
 w_traj = f_resonance * 2 * pi; % trajectory frequency
 w_n = 5 * w_traj; % controller bandwidth (approx).
@@ -118,4 +119,3 @@ motion_comp(out, pose);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
 % torque_calc_3d(out, N, rated_torque, peak_torque);
-

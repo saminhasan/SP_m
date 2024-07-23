@@ -1,4 +1,4 @@
-function [] = torque_calc_3d(out, N)
+function [] = torque_calc_3d(out, N, rated_torque, peak_torque)
     % Define colors for different motors
     colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
@@ -29,10 +29,10 @@ function [] = torque_calc_3d(out, N)
 
     % Add surfaces for motor peaks and rated values
     [X, Z] = meshgrid(linspace(min(omegas_rpm(:)) * N, max(omegas_rpm(:)) * N, 100), linspace(min(sim_time), max(sim_time), 100));
-    Y_peak_pos = 0.4 * ones(size(X));
-    Y_peak_neg = -0.4 * ones(size(X));
-    Y_rated_pos = 0.27 * ones(size(X));
-    Y_rated_neg = -0.27 * ones(size(X));
+    Y_peak_pos = peak_torque * ones(size(X));
+    Y_peak_neg = -peak_torque * ones(size(X));
+    Y_rated_pos = rated_torque * ones(size(X));
+    Y_rated_neg = -rated_torque * ones(size(X));
 
     % Create surfaces with 'HandleVisibility' set to 'off'
     surf(X, Y_peak_pos, Z, 'FaceAlpha', 0.2, 'EdgeColor', 'none', 'FaceColor', 'r', 'HandleVisibility', 'off');

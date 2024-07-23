@@ -1,5 +1,5 @@
-function [] = torque_calc(out, N)
-% Define colors for different motors
+function [] = torque_calc(out, N, rated_torque, peak_torque)
+
 colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
 % motor parameters
@@ -44,10 +44,10 @@ end
 legend(plots, labels, 'Location', 'northwest');
 
 % Add y-lines for motor peaks and rated values
-yline(0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
-yline(0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
-yline(-0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
-yline(-0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+yline(peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(rated_torque, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(-rated_torque, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+yline(-peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
 
 xlabel('Angular Velocity (RPM)');
 ylabel('Torque (Nm)');
@@ -68,10 +68,10 @@ end
 legend(time_plots, labels, 'Location', 'northwest');
 
 % Add y-lines for motor peaks and rated values
-yline(0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
-yline(0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
-yline(-0.27, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
-yline(-0.4, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+yline(peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(rated_torque, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
+yline(-rated_torque, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
+yline(-peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');
 
 xlabel('Time (s)');
 ylabel('Torque (Nm)');
