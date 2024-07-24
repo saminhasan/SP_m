@@ -11,6 +11,7 @@ sim_time = out.simout.Time;
 omegas = out.simout.Data(:, 2:4:22);
 alphas = out.simout.Data(:, (2:4:22)+1); %#ok<NASGU>
 taus_load = out.simout.Data(:, (2:4:22) + 2);
+disp(mean(mean(taus_load)) - mean(mean(taus_load)));
 omegas_rad_motor = omegas * N; % Angular velocity in rad/s
 omegas_rpm_motor = omegas * (60 / (2 * pi))* N;
 tau_motor =  taus_load / N; % torque required in motor frame
@@ -20,14 +21,13 @@ power_motor = tau_motor .* omegas_rad_motor; % Power in watts
 % Define the time range
 % T1 = 1;
 % T2 = 3;
-% 
 % % Extract the indices for which sim_time is within the specified range
-% masked_time_indices = (out.simout.Time > T1) & (out.simout.Time < T2);
-% 
+% masked_time_indices = (sim_time > T1) & (sim_time < T2);
 % % Filter the data based on these indices
-% masked_omegas_rpm = omegas_rpm(masked_time_indices, :); %#ok<NASGU>
-% masked_t_total = t_total(masked_time_indices, :); %#ok<NASGU>
-% masked_time = out.simout.Time(masked_time_indices); %#ok<NASGU>
+% omegas_rpm_motor = omegas_rpm_motor(masked_time_indices, :); 
+% tau_motor = tau_motor(masked_time_indices, :); 
+% sim_time = sim_time(masked_time_indices); 
+% power_motor = power_motor(masked_time_indices, :);
 
 figure;
 hold on;

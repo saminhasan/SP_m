@@ -46,15 +46,16 @@ cyan = [0 1 1];
 magenta = [1 0 1];
 
 % Motor parameters
-N = 36; % gear ratio
-peak_torque = 0.4; % motor peak torque in motor frame
-rated_torque = 0.27; % motor rated torque in motor frame
-J_m = 12e-6; % motor inertia in motor frame
+efficiency = 0.8;
+% N = 36; % gear ratio
+% peak_torque = 0.4*efficiency; % motor peak torque in motor frame
+% rated_torque = 0.27*efficiency; % motor rated torque in motor frame
+% J_m = 12e-6; % motor inertia in motor frame
 
-% N = 9; % MIT gear ratio*********************
-% peak_torque = 0.28*20; % mit motor peak torque in motor frame
-% rated_torque = 0.28*5; % mit motor rated torque in motor frame
-% J_m = 12e-5; % mit motor inertia in motor frame
+N = 9; % MIT gear ratio*********************
+peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
+rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
+J_m = 12e-5; % mit motor inertia in motor frame
 
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
