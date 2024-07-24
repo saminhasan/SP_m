@@ -109,7 +109,7 @@ D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency
 
 
-model_name = 'hp_v4.slx';
+model_name = 'hp_v1.slx';
 fprintf('>> Starting Simulation: %s\n', model_name);
 
 % Run the simulation and perform calculations
@@ -119,3 +119,27 @@ torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
 % torque_calc_3d(out, N, rated_torque, peak_torque);
 
+model_name = 'hp_v2.slx';
+fprintf('>> Starting Simulation: %s\n', model_name);
+
+% Run the simulation and perform calculations
+out = sim(model_name);
+motion_comp(out, pose);
+torque_calc(out, N, rated_torque, peak_torque);
+disp(">>Done.")
+model_name = 'hp_v3.slx';
+fprintf('>> Starting Simulation: %s\n', model_name);
+
+% Run the simulation and perform calculations
+out = sim(model_name);
+motion_comp(out, pose);
+torque_calc(out, N, rated_torque, peak_torque);
+disp(">>Done.")
+model_name = 'hp_v4.slx';
+fprintf('>> Starting Simulation: %s\n', model_name);
+
+% Run the simulation and perform calculations
+out = sim(model_name);
+motion_comp(out, pose);
+torque_calc(out, N, rated_torque, peak_torque);
+disp(">>Done.")
