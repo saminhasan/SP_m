@@ -1,9 +1,9 @@
 clear all; clc; close all; %#ok<CLALL>
 
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData();
+[motorData, pose, tf, ts] = generateMotorData();
 % [motorData, pose, tf, ts] = rw();
-[motorData, pose, tf, ts] = rr();
+% [motorData, pose, tf, ts] = rr();
 f_resonance = 2/0.75; %
 % f_resonance = find_fft_peaks(pose);
 % calculate, for which all motor angles are zero
@@ -35,7 +35,7 @@ platform_points = [
     platform.P31L(3), platform.P31L(1);
     platform.P31R(3), platform.P31R(1)
     ];
-
+plt_refs = atan2(platform_points(:,2),platform_points(:,1));
 % Define colors for different servo arms
 red = [1 0 0];
 green = [0 1 0];
@@ -45,15 +45,16 @@ cyan = [0 1 1];
 magenta = [1 0 1];
 
 % Motor parameters
-N = 36; % gear ratio
-peak_torque = 0.4; % motor peak torque in motor frame
-rated_torque = 0.27; % motor rated torque in motor frame
-J_m = 12e-6; % motor inertia in motor frame
+efficiency = 0.8;
+% N = 36; % gear ratio
+% peak_torque = 0.4*efficiency; % motor peak torque in motor frame
+% rated_torque = 0.27*efficiency; % motor rated torque in motor frame
+% J_m = 12e-6; % motor inertia in motor frame
 
-% N = 9; % MIT gear ratio*********************
-% peak_torque = 0.28*20; % mit motor peak torque in motor frame
-% rated_torque = 0.28*5; % mit motor rated torque in motor frame
-% J_m = 12e-5; % mit motor inertia in motor frame
+N = 9; % MIT gear ratio*********************
+peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
+rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
+J_m = 12e-5; % mit motor inertia in motor frame
 
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
@@ -93,10 +94,10 @@ J_e = (J_mr + J_r);
 % Linear Spring
 % any length should work, however longer spring
 % will reduce affect any axis that is not y
-linear_spring_length = 10;
-M_eq = (platform_mass+ 6*coupler_mass + 6 * excenter_mass/2 + 6 * J_m * (N/excenter.R)^2) ;
+linear_spring_length = 1;
+M_eq = (platform_mass + 6*coupler_mass + 6 * excenter_mass/2 + 6 * J_m * (N / excenter.R)^2) ;
 linear_spring_constant = (2 * pi * f_resonance)^2 * M_eq;
-linear_spring_offset = (((platform_mass + 6*coupler_mass+ 6 * excenter_mass/2) * g) / linear_spring_constant)/2;
+linear_spring_offset = (((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2) * g) / linear_spring_constant);
 
 K_e = angular_spring_constant;
 % Control parameters
@@ -113,7 +114,6 @@ fprintf('>> Starting Simulation: %s\n', model_name);
 
 % Run the simulation and perform calculations
 out = sim(model_name);
-% out = sim('hp_v2.slx');
 motion_comp(out, pose);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")

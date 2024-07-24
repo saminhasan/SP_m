@@ -21,18 +21,21 @@ euler_angles_deg = rad2deg(euler_angles);
 
 % Create 6 subplots for each joint
 figure;
-
+sgtitle('mean centered joint angles')
 for joint = 1:6
     subplot(3, 2, joint);
     hold on;
-    plot(1:numTimeSteps, euler_angles_deg(:, (joint-1)*3 + 1), 'r'); 
-    plot(1:numTimeSteps, euler_angles_deg(:, (joint-1)*3 + 2), 'g');
-    plot(1:numTimeSteps, euler_angles_deg(:, (joint-1)*3 + 3), 'b');
+    plot(1:numTimeSteps, mean_center(euler_angles_deg(:, (joint-1)*3 + 1)), 'r'); 
+    plot(1:numTimeSteps, mean_center(euler_angles_deg(:, (joint-1)*3 + 2)), 'g');
+    plot(1:numTimeSteps, mean_center(euler_angles_deg(:, (joint-1)*3 + 3)), 'b');
     hold off;
     title(['Joint ' num2str(joint)]);
-    xlabel('Time Step');
+    xlabel('Time Index');
     ylabel('Angle (degrees)');
     legend('R_z', 'R_y', 'R_x');
-    % legend('R_y', 'R_x');
     grid on;
+end
+
+function rdata = mean_center(data)
+    rdata = data - mean(data);
 end

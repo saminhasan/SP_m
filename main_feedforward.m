@@ -35,6 +35,7 @@ platform_points = [
     platform.P31L(3), platform.P31L(1);
     platform.P31R(3), platform.P31R(1)
     ];
+plt_refs = atan2(platform_points(:,2),platform_points(:,1));
 
 % Define colors for different servo arms
 red = [1 0 0];

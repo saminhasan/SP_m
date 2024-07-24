@@ -11,11 +11,11 @@ sim_time = out.simout.Time;
 omegas = out.simout.Data(:, 2:4:22);
 alphas = out.simout.Data(:, (2:4:22)+1); %#ok<NASGU>
 taus_load = out.simout.Data(:, (2:4:22) + 2);
-omegas_rpm = omegas * (60 / (2 * pi));
-
-
+omegas_rad_motor = omegas * N; % Angular velocity in rad/s
+omegas_rpm_motor = omegas * (60 / (2 * pi))* N;
 tau_motor =  taus_load / N; % torque required in motor frame
-
+% Calculate power (P = τ * ω)
+power_motor = tau_motor .* omegas_rad_motor; % Power in watts
 % plot motor T omega Nm and RPM
 % Define the time range
 % T1 = 1;
@@ -35,7 +35,7 @@ plots = gobjects(1, 6);
 labels = cell(1, 6);
 for i = 1:6
     % Plot data for each motor
-    plots(i) = plot(omegas_rpm(:, i) * N, tau_motor(:, i), 'Color', colors(i));
+    plots(i) = plot(omegas_rpm_motor(:, i), tau_motor(:, i), 'Color', colors(i));
     % plots(i) = plot(masked_omegas_rpm(:, i) * N, masked_t_total(:, i), 'Color', colors(i));
     labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
 end
@@ -76,6 +76,24 @@ yline(-peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerti
 xlabel('Time (s)');
 ylabel('Torque (Nm)');
 title('Torque (Nm) vs Time (s)');
+grid on;
+hold off;
+
+figure;
+hold on;
+time_plots = gobjects(1, 6); 
+for i = 1:6
+    % Plot torque vs time for each motor
+    time_plots(i) = plot(sim_time, power_motor(:,i), 'Color', colors(i));
+    labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
+end
+
+% Add legend with motor labels
+legend(time_plots, labels, 'Location', 'northwest');
+
+xlabel('Time (s)');
+ylabel('Power (W)');
+title('Power (W) vs Time (s)');
 grid on;
 hold off;
 % max(t_total)

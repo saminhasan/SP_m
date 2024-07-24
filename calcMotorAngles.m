@@ -4,7 +4,7 @@ excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
 platform = hexapod.platform;
-% rotation order - YZX - yrp, if z azis was up it would have been - ryp
+% rotation order - YZX - yrp, if z axis was up it would have been - ryp
 
 
 

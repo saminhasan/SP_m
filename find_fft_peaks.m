@@ -18,6 +18,10 @@ function traj_f = find_fft_peaks(pose)
     legend;
     grid on;
     hold off;
+    figure;
+    plot(time0, y);
+    grid on;
+    
     % Consider only positive frequencies
     positive_freq_indices = fft_f > 1;
     fft_f = fft_f(positive_freq_indices);
