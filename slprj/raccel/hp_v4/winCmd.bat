@@ -1,2 +1,0 @@
-chcp 65001
-cmd /D /c start "RapidAccelerator" /B "C:\Users\james\OneDrive\Desktop\SP_m\slprj\raccel\hp_v4\hp_v4.exe" --config "C:\Users\james\AppData\Local\Temp\raccel_inputpea0c167a_2bc2_4a5a_9573_5625876efbf5.cfg" -server_info_file "C:\Users\james\AppData\Local\Temp\tppea0c167a_2bc2_4a5a_9573_5625876efbf5.info" -tgtconn_server_info_file "C:\Users\james\AppData\Local\Temp\tgtconnpea0c167a_2bc2_4a5a_9573_5625876efbf5.info" -tgtconn_port 0 -port 0 -verbose off -w 1>"C:\Users\james\OneDrive\Desktop\SP_m\slprj\raccel\hp_v4\cmdLog.txt"
