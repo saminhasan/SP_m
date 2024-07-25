@@ -55,7 +55,12 @@ J_m = 12e-6; % motor inertia in motor frame
 % peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
 % rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
 % J_m = 12e-5; % mit motor inertia in motor frame
-
+%RMD-X8-P9-25
+% efficiency = 0.8;
+% N = 10; % gear ratio
+% peak_torque = (20/9)*efficiency; % motor peak torque in motor frame
+% rated_torque = (10/9)*efficiency; % motor rated torque in motor frame
+% J_m = 20e-4/N; % motor inertia in motor frame
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
 rho = 7850; % kg/m^3 density of steel
@@ -88,7 +93,8 @@ tau_0 = ((platform_mass / 6) * g * excenter.R) + (excenter_mass * g * excenter.R
 angular_spring_constant = ((((platform_mass / 6) * excenter.R^2) + (coupler_mass * excenter.R^2) ...
     + (excenter_mass * (excenter.R/2)^2) + J_mr) * (2 * pi * f_resonance)^2);
 % angular offset needed to genarate holding torque.
-angular_spring_offset = ((tau_0 - 1.0) / angular_spring_constant);
+% angular_spring_offset = ((tau_0 - 1.0) / angular_spring_constant);
+angular_spring_offset = ((tau_0) / angular_spring_constant);
 % cg = - 0.757059531729860
 
 % Linear Spring
@@ -97,7 +103,8 @@ angular_spring_offset = ((tau_0 - 1.0) / angular_spring_constant);
 linear_spring_length = 1;
 M_eq = (platform_mass + 6*coupler_mass + 6 * excenter_mass/2 + 6 * J_m * (N / excenter.R)^2) ;
 linear_spring_constant = (2 * pi * f_resonance)^2 * M_eq;
-linear_spring_offset = ((((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2) * g) + 120) / linear_spring_constant);
+% linear_spring_offset = ((((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2) * g) + 120) / linear_spring_constant);
+linear_spring_offset = ((((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2) * g)) / linear_spring_constant);
 
 K_e = angular_spring_constant;
 % Control parameters
@@ -109,11 +116,12 @@ D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency
 
 
-model_name = 'hp_v4.slx';
+model_name = 'hp_v1.slx';
 fprintf('>> Starting Simulation: %s\n', model_name);
 % Run the simulation and perform calculations
 out = sim(model_name);
-motion_comp(out, pose);
+% motion_comp(out, pose);
+pose_filtered(out, pose, ts);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
 % torque_calc_3d(out, N, rated_torque, peak_torque);

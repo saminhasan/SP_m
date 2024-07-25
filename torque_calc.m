@@ -11,7 +11,6 @@ sim_time = out.simout.Time;
 omegas = out.simout.Data(:, 2:4:22);
 alphas = out.simout.Data(:, (2:4:22)+1); %#ok<NASGU>
 taus_load = out.simout.Data(:, (2:4:22) + 2);
-disp(mean(mean(taus_load)) - mean(mean(taus_load)));
 omegas_rad_motor = omegas * N; % Angular velocity in rad/s
 omegas_rpm_motor = omegas * (60 / (2 * pi))* N;
 tau_motor =  taus_load / N; % torque required in motor frame

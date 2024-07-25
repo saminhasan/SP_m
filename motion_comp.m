@@ -1,6 +1,6 @@
 function [] = motion_comp(out, pose)
     % Extract data from simulation output
-    ts = out.pose_simscape.Time;
+    tssim = out.pose_simscape.Time;
     xs = out.pose_simscape.Data(:,1);
     ys = out.pose_simscape.Data(:,2);
     zs = out.pose_simscape.Data(:,3);
@@ -44,7 +44,7 @@ function [] = motion_comp(out, pose)
 
     subplot(3,2,1);
     hold on;
-    plot(ts, xs, '-r', 'DisplayName', 'Simscape X');
+    plot(tssim, xs, '-r', 'DisplayName', 'Simscape X');
     plot(time0, x, '-b', 'DisplayName', 'Setpoint X');
     title('X Position');
     xlabel('Time (s)');
@@ -55,7 +55,7 @@ function [] = motion_comp(out, pose)
 
     subplot(3,2,2);
     hold on;
-    plot(ts, ys, '-r', 'DisplayName', 'Simscape Y');
+    plot(tssim, ys, '-r', 'DisplayName', 'Simscape Y');
     plot(time0, y, '-b', 'DisplayName', 'Setpoint Y');
     title('Y Position');
     xlabel('Time (s)');
@@ -66,7 +66,7 @@ function [] = motion_comp(out, pose)
 
     subplot(3,2,3);
     hold on;
-    plot(ts, zs, '-r', 'DisplayName', 'Simscape Z');
+    plot(tssim, zs, '-r', 'DisplayName', 'Simscape Z');
     plot(time0, z, '-b', 'DisplayName', 'Setpoint Z');
     title('Z Position');
     xlabel('Time (s)');
@@ -77,7 +77,7 @@ function [] = motion_comp(out, pose)
 
     subplot(3,2,4);
     hold on;
-    plot(ts, Rxs, '-r', 'DisplayName', 'Simscape Rx');
+    plot(tssim, Rxs, '-r', 'DisplayName', 'Simscape Rx');
     plot(time0, Rx, '-b', 'DisplayName', 'Setpoint Rx');
     title('Rx Orientation');
     xlabel('Time (s)');
@@ -88,7 +88,7 @@ function [] = motion_comp(out, pose)
 
     subplot(3,2,5);
     hold on;
-    plot(ts, Rys, '-r', 'DisplayName', 'Simscape Ry');
+    plot(tssim, Rys, '-r', 'DisplayName', 'Simscape Ry');
     plot(time0, Ry, '-b', 'DisplayName', 'Setpoint Ry');
     title('Ry Orientation');
     xlabel('Time (s)');
@@ -99,7 +99,7 @@ function [] = motion_comp(out, pose)
 
     subplot(3,2,6);
     hold on;
-    plot(ts, Rzs, '-r', 'DisplayName', 'Simscape Rz');
+    plot(tssim, Rzs, '-r', 'DisplayName', 'Simscape Rz');
     plot(time0, Rz, '-b', 'DisplayName', 'Setpoint Rz');
     title('Rz Orientation');
     xlabel('Time (s)');
