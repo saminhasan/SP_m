@@ -40,7 +40,7 @@ function pose_filtered(out, pose, ts)
     xlabel('Time (s)');
     ylabel('X Position (m)');
     legend;
-    grid on;
+    grid on;grid minor;
     hold off;
 
     subplot(3,2,2);
@@ -52,7 +52,7 @@ function pose_filtered(out, pose, ts)
     xlabel('Time (s)');
     ylabel('Y Position (m)');
     legend;
-    grid on;
+    grid on;grid minor;
     hold off;
 
     subplot(3,2,3);
@@ -64,7 +64,7 @@ function pose_filtered(out, pose, ts)
     xlabel('Time (s)');
     ylabel('Z Position (m)');
     legend;
-    grid on;
+    grid on;grid minor;
     hold off;
 
     subplot(3,2,4);
@@ -76,7 +76,7 @@ function pose_filtered(out, pose, ts)
     xlabel('Time (s)');
     ylabel('Rx Orientation (rad)');
     legend;
-    grid on;
+    grid on;grid minor;
     hold off;
 
     subplot(3,2,5);
@@ -88,7 +88,7 @@ function pose_filtered(out, pose, ts)
     xlabel('Time (s)');
     ylabel('Ry Orientation (rad)');
     legend;
-    grid on;
+    grid on;grid minor;
     hold off;
 
     subplot(3,2,6);
@@ -100,7 +100,7 @@ function pose_filtered(out, pose, ts)
     xlabel('Time (s)');
     ylabel('Rz Orientation (rad)');
     legend;
-    grid on;
+    grid on;grid minor;
     hold off;
 
     % Nested Filter function definition

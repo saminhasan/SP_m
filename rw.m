@@ -1,4 +1,5 @@
 function [motorData, pose, tf, ts] = rw()
+    hexapod = get_params();
     ts = 1/240;
     [y_zero, ~] = calcQ();
     file_name = 'Traj.csv';
@@ -71,7 +72,7 @@ function [motorData, pose, tf, ts] = rw()
         pose(i).time0 = time0(i);
     
         % Call calcMotorAngles with the current pose
-        [motorAngles(i, :),~] = calcMotorAngles(pose(i));
+        [motorAngles(i, :),~] = calcMotorAngles(pose(i), hexapod);
     end
     motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...
                  -motorAngles(:,3), -motorAngles(:,4), ...

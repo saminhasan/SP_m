@@ -38,4 +38,5 @@ end
 
 function rdata = mean_center(data)
     rdata = data - mean(data);
+    % rdata = data;
 end

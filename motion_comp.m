@@ -37,6 +37,7 @@ function [] = motion_comp(out, pose)
     % ylabel('Amplitude');
     % legend;
     % grid on;
+    % grid minor
     % hold off;
 
     % Plot position and orientation components separately
@@ -51,6 +52,7 @@ function [] = motion_comp(out, pose)
     ylabel('X Position (m)');
     legend;
     grid on;
+    grid minor;
     hold off;
 
     subplot(3,2,2);
@@ -62,6 +64,7 @@ function [] = motion_comp(out, pose)
     ylabel('Y Position (m)');
     legend;
     grid on;
+    grid minor;
     hold off;
 
     subplot(3,2,3);
@@ -73,6 +76,7 @@ function [] = motion_comp(out, pose)
     ylabel('Z Position (m)');
     legend;
     grid on;
+    grid minor;
     hold off;
 
     subplot(3,2,4);
@@ -84,6 +88,7 @@ function [] = motion_comp(out, pose)
     ylabel('Rx Orientation (rad)');
     legend;
     grid on;
+    grid minor;
     hold off;
 
     subplot(3,2,5);
@@ -95,6 +100,7 @@ function [] = motion_comp(out, pose)
     ylabel('Ry Orientation (rad)');
     legend;
     grid on;
+    grid minor;
     hold off;
 
     subplot(3,2,6);
@@ -106,6 +112,7 @@ function [] = motion_comp(out, pose)
     ylabel('Rz Orientation (rad)');
     legend;
     grid on;
+    grid minor;
     hold off;
 
     % % Combined plot for all components
@@ -141,6 +148,7 @@ function [] = motion_comp(out, pose)
     % ylabel('Values');
     % legend;
     % grid on;
+    % grid minor;
     % hold off;
     % % Calculate tracking performance metrics
     % rmse_x = sqrt(mean((interp1(time0, x, ts) - xs).^2));

@@ -1,4 +1,6 @@
 function [motorData, pose, tf, ts] = generateMotorData()
+hexapod = get_params();
+
 % Time setup
 tf = 4;
 ts = 1e-4;
@@ -46,7 +48,7 @@ for i = 1:length(time0)
     pose(i).time0 = time0(i);
 
     % Call calcMotorAngles with the current pose
-    [motorAngles(i, :),~] = calcMotorAngles(pose(i));
+    [motorAngles(i, :),~] = calcMotorAngles(pose(i),hexapod);
 end
 
 motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...

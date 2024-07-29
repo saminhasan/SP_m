@@ -1,44 +1,40 @@
-function [motorAngles, hexapod] = calcMotorAngles(pose)
-hexapod = get_params();
+function [motorAngles, hexapod] = calcMotorAngles(pose,hexapod)
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
 platform = hexapod.platform;
+
 % rotation order - YZX - yrp, if z axis was up it would have been - ryp
-
-
-
-
-
-
 % rotate platform around X axis by pose.Rx radians
-platform.P12L = (platform.P12L'*rotx(pose.Rx/pi*180))';
-platform.P12R = (platform.P12R'*rotx(pose.Rx/pi*180))';
+platform.P12L = (platform.P12L'*rotx(rad2deg(pose.Rx)))';
+platform.P12R = (platform.P12R'*rotx(rad2deg(pose.Rx)))';
 
-platform.P23L = (platform.P23L'*rotx(pose.Rx/pi*180))';
-platform.P23R = (platform.P23R'*rotx(pose.Rx/pi*180))';
+platform.P23L = (platform.P23L'*rotx(rad2deg(pose.Rx)))';
+platform.P23R = (platform.P23R'*rotx(rad2deg(pose.Rx)))';
 
-platform.P31L = (platform.P31L'*rotx(pose.Rx/pi*180))';
-platform.P31R = (platform.P31R'*rotx(pose.Rx/pi*180))';
+platform.P31L = (platform.P31L'*rotx(rad2deg(pose.Rx)))';
+platform.P31R = (platform.P31R'*rotx(rad2deg(pose.Rx)))';
+
 % rotate platform around Y axis by pose.Ry radians
-platform.P12L = (platform.P12L'*roty(pose.Ry/pi*180))';
-platform.P12R = (platform.P12R'*roty(pose.Ry/pi*180))';
+platform.P12L = (platform.P12L'*roty(rad2deg(pose.Ry)))';
+platform.P12R = (platform.P12R'*roty(rad2deg(pose.Ry)))';
 
-platform.P23L = (platform.P23L'*roty(pose.Ry/pi*180))';
-platform.P23R = (platform.P23R'*roty(pose.Ry/pi*180))';
+platform.P23L = (platform.P23L'*roty(rad2deg(pose.Ry)))';
+platform.P23R = (platform.P23R'*roty(rad2deg(pose.Ry)))';
 
-platform.P31L = (platform.P31L'*roty(pose.Ry/pi*180))';
-platform.P31R = (platform.P31R'*roty(pose.Ry/pi*180))';
+platform.P31L = (platform.P31L'*roty(rad2deg(pose.Ry)))';
+platform.P31R = (platform.P31R'*roty(rad2deg(pose.Ry)))';
 
 % rotate platform around Z axis by pose.Rz radians
-platform.P12L = (platform.P12L'*rotz(pose.Rz/pi*180))';
-platform.P12R = (platform.P12R'*rotz(pose.Rz/pi*180))';
+platform.P12L = (platform.P12L'*rotz(rad2deg(pose.Rz)))';
+platform.P12R = (platform.P12R'*rotz(rad2deg(pose.Rz)))';
 
-platform.P23L = (platform.P23L'*rotz(pose.Rz/pi*180))';
-platform.P23R = (platform.P23R'*rotz(pose.Rz/pi*180))';
+platform.P23L = (platform.P23L'*rotz(rad2deg(pose.Rz)))';
+platform.P23R = (platform.P23R'*rotz(rad2deg(pose.Rz)))';
 
-platform.P31L = (platform.P31L'*rotz(pose.Rz/pi*180))';
-platform.P31R = (platform.P31R'*rotz(pose.Rz/pi*180))';
+platform.P31L = (platform.P31L'*rotz(rad2deg(pose.Rz)))';
+platform.P31R = (platform.P31R'*rotz(rad2deg(pose.Rz)))';
+
 % % add platfprm center
 platform.P12L = platform.P12L+[pose.x;pose.y; pose.z];
 platform.P12R = platform.P12R+[pose.x;pose.y; pose.z];
@@ -49,6 +45,10 @@ platform.P23R = platform.P23R+[pose.x;pose.y; pose.z];
 platform.P31L = platform.P31L+[pose.x;pose.y; pose.z];
 platform.P31R = platform.P31R+[pose.x;pose.y; pose.z];
 
+platform.bearings = [platform.P12L, platform.P12R, platform.P23L, platform.P23R, platform.P31L, platform.P31R];
+
+% disp('1 : ');
+% (platform.bearings - base.bearings)
 
 % *****************************
 % calculate motor angles for 12

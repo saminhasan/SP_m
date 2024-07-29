@@ -35,7 +35,8 @@ platform_points = [
     platform.P31L(3), platform.P31L(1);
     platform.P31R(3), platform.P31R(1)
     ];
-plt_refs = atan2(platform_points(:,2),platform_points(:,1));
+% plt_refs = atan2(platform_points(:,2),platform_points(:,1));
+plt_refs = rad2deg([-120, 60,0, 180, 120, -60]);
 % Define colors for different servo arms
 red = [1 0 0];
 green = [0 1 0];
@@ -45,25 +46,25 @@ cyan = [0 1 1];
 magenta = [1 0 1];
 
 % Motor parameters
-efficiency = 0.8;
-N = 36; % gear ratio
-peak_torque = 0.4*efficiency; % motor peak torque in motor frame
-rated_torque = 0.27*efficiency; % motor rated torque in motor frame
-J_m = 12e-6; % motor inertia in motor frame
+efficiency = 0.9;
+% N = 36; % gear ratio
+% peak_torque = 0.4*efficiency; % motor peak torque in motor frame
+% rated_torque = 0.27*efficiency; % motor rated torque in motor frame
+% J_m = 12e-6; % motor inertia in motor frame
 
-% N = 9; % MIT gear ratio*********************
-% peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
-% rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
-% J_m = 12e-5; % mit motor inertia in motor frame
+N = 9; % MIT gear ratio*********************
+peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
+rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
+J_m = 12e-5; % mit motor inertia in motor frame
+
 %RMD-X8-P9-25
-% efficiency = 0.8;
 % N = 10; % gear ratio
 % peak_torque = (20/9)*efficiency; % motor peak torque in motor frame
 % rated_torque = (10/9)*efficiency; % motor rated torque in motor frame
 % J_m = 20e-4/N; % motor inertia in motor frame
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
-rho = 7850; % kg/m^3 density of steel
+rho = 7850*5; % kg/m^3 density of steel
 platform_mass = 20; % kg
 % set up cylinder height same as excenter arm (arbitrary value),
 % density as calculated to simulate reflected
@@ -116,7 +117,7 @@ D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency
 
 
-model_name = 'hp_v1.slx';
+model_name = 'hp_v4.slx';
 fprintf('>> Starting Simulation: %s\n', model_name);
 % Run the simulation and perform calculations
 out = sim(model_name);
@@ -125,7 +126,6 @@ pose_filtered(out, pose, ts);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
 % torque_calc_3d(out, N, rated_torque, peak_torque);
-
 
 % model_name = 'hp_v2.slx';
 % fprintf('>> Starting Simulation: %s\n', model_name); 

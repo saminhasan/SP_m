@@ -16,8 +16,8 @@ omegas_rpm_motor = omegas * (60 / (2 * pi))* N;
 tau_motor =  taus_load / N; % torque required in motor frame
 % Calculate power (P = τ * ω)
 power_motor = tau_motor .* omegas_rad_motor; % Power in watts
-% plot motor T omega Nm and RPM
-% Define the time range
+
+% % Define the time range
 % T1 = 1;
 % T2 = 3;
 % % Extract the indices for which sim_time is within the specified range
@@ -28,6 +28,7 @@ power_motor = tau_motor .* omegas_rad_motor; % Power in watts
 % sim_time = sim_time(masked_time_indices); 
 % power_motor = power_motor(masked_time_indices, :);
 
+% plot motor T omega Nm and RPM
 figure;
 hold on;
 plots = gobjects(1, 6); 
@@ -51,7 +52,7 @@ yline(-peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerti
 xlabel('Angular Velocity (RPM)');
 ylabel('Torque (Nm)');
 title('Torque (Nm) vs Angular Velocity (RPM)');
-grid on;
+grid on;grid minor;
 hold off;
 
 figure;
@@ -75,7 +76,7 @@ yline(-peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerti
 xlabel('Time (s)');
 ylabel('Torque (Nm)');
 title('Torque (Nm) vs Time (s)');
-grid on;
+grid on;grid minor;
 hold off;
 
 figure;
@@ -93,7 +94,7 @@ legend(time_plots, labels, 'Location', 'northwest');
 xlabel('Time (s)');
 ylabel('Power (W)');
 title('Power (W) vs Time (s)');
-grid on;
+grid on;grid minor;
 hold off;
 % max(t_total)
 % min(t_total)
@@ -107,7 +108,7 @@ hold off;
 % xlabel('Time (s)');
 % title('Motor Angle (degress) vs Time (s)');
 % legend;
-% grid on;
+% grid on;grid minor;
 % hold off;
 % tau = t_total;
 % [n, num_motors] = size(tau);
