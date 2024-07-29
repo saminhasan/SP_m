@@ -1,5 +1,5 @@
 clear all; clc; close all; %#ok<CLALL>
-
+tic
 % Generate motor data and initial pose
 % [motorData, pose, tf, ts] = generateMotorData();
 % [motorData, pose, tf, ts] = rw();
@@ -121,10 +121,12 @@ model_name = 'hp_v4.slx';
 fprintf('>> Starting Simulation: %s\n', model_name);
 % Run the simulation and perform calculations
 out = sim(model_name);
+toc
 % motion_comp(out, pose);
 pose_filtered(out, pose, ts);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
+
 % torque_calc_3d(out, N, rated_torque, peak_torque);
 
 % model_name = 'hp_v2.slx';

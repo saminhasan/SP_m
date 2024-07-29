@@ -3,7 +3,7 @@ function hexapod = get_params()
 
 % Excenter arm
 excenter.R = 0.08;   % excenter radius
-excenter.o = .02;   % excenter offset to universal joint
+excenter.o = .00;   % excenter offset to universal joint
 excenter.phi = atan2(excenter.o, excenter.R);
 
 % Connecting rod
@@ -34,6 +34,8 @@ base.P23R = base.corner3 - (base.corner3 - base.corner2) / sqrt(dot(base.corner3
 base.P31L = base.corner3 + (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
 base.P31R = base.corner1 - (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
 base.bearings = [base.P12L, base.P12R, base.P23L, base.P23R, base.P31L, base.P31R];
+base.beta = deg2rad([-30,150, 90, 270, 210, 390]);
+
 % Platform triangle
 platform.L = 0.3; % Length of base
 platform.h = sqrt(platform.L^2 - (platform.L / 2)^2);
@@ -57,7 +59,6 @@ platform.P23R = platform.corner3 - (platform.corner3 - platform.corner2) / sqrt(
 platform.P31L = platform.corner3 + (platform.corner1 - platform.corner3) / sqrt(dot(platform.corner1 - platform.corner3, platform.corner1 - platform.corner3)) * platform.l + platform.bearingwidth / 2 * [sin(platform.orientation(2)); 0; cos(platform.orientation(2))];
 platform.P31R = platform.corner1 - (platform.corner1 - platform.corner3) / sqrt(dot(platform.corner1 - platform.corner3, platform.corner1 - platform.corner3)) * platform.l + platform.bearingwidth / 2 * [sin(platform.orientation(2)); 0; cos(platform.orientation(2))];
 platform.bearings = [platform.P12L, platform.P12R, platform.P23L, platform.P23R, platform.P31L, platform.P31R];
-
 % param end
 
 hexapod.excenter = excenter;

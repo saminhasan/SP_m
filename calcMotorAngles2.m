@@ -6,7 +6,6 @@ function [motorAngles, hexapod] = calcMotorAngles2(pose,hexapod)
     coupler = hexapod.coupler;
     base = hexapod.base;
     platform = hexapod.platform;
-    base.beta = deg2rad([-30,150, 90, 270, 210, 390]);
     R = rotz(rad2deg(rotation(3))) * roty(rad2deg(rotation(2))) * rotx(rad2deg(rotation(1)));
     % Calculate leg lengths for each leg
     l = repmat(translation, 1, 6)  + (R * platform.bearings) - base.bearings;
