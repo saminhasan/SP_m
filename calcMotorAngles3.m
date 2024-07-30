@@ -1,7 +1,6 @@
 function [motorAngles, hexapod] = calcMotorAngles3(pose,hexapod)
-    translation = [pose.x, pose.y, pose.z];
-    rotation = -[pose.Rx, pose.Ry, pose.Rz];
-    translation = translation(:);
+    translation = [pose.x, pose.y, pose.z]';
+    rotation = -[pose.Rx, pose.Ry, pose.Rz]';
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
     base = hexapod.base;
@@ -10,17 +9,14 @@ function [motorAngles, hexapod] = calcMotorAngles3(pose,hexapod)
     R = rotz(rad2deg(rotation(3))) * roty(rad2deg(rotation(2))) * rotx(rad2deg(rotation(1)));
     % Calculate leg lengths for each leg
     l = repmat(translation, 1, 6)  + (R * platform.bearings) - base.bearings;
-    lll = vecnorm(l);
-    lx = l(1, :);
-    ly = l(2, :);
-    lz = l(3, :);
     % Calculate servo angles
     ldl = coupler.L;
-    lhl = sqrt(excenter.R^2 + excenter.o^2);
-    r = excenter.o;
-    h = excenter.R;
-    g = lll.^2 - (ldl^2 - lhl^2);
-    ek = 2 * lhl * ( (h * ly) - (r* lx.*sin(base.beta)) - (r*lz.*cos(base.beta)));
-    fk = 2 * lhl *(h*lx.*sin(base.beta) + h*lz.*cos(base.beta) + r*ly);
-    motorAngles = -(asin(g ./ (sqrt(ek.^2 + fk.^2)) ) - atan2(fk, ek));
+    lhl = excenter.R;
+    r = excenter.o * sin((pi/2) - excenter.phi);
+    h = excenter.R * cos(excenter.phi);
+    g = (vecnorm(l).^2 - (ldl^2 - lhl^2))/2 ;
+    ek = ( -(r* l(1, :).*sin(base.beta)) +(h*l(2, :)) - (r*l(3, :).*cos(base.beta))) ;
+    fk = ((h*l(1, :).*sin(base.beta)) + (r*l(2, :)) + (h*l(3, :).*cos(base.beta)) );
+    motorAngles = -( asin(g ./ sqrt(ek.^2 + fk.^2)) - atan2(fk, ek));
+
 end

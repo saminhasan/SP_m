@@ -64,7 +64,7 @@ J_m = 12e-5; % mit motor inertia in motor frame
 % J_m = 20e-4/N; % motor inertia in motor frame
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
-rho = 7850*5; % kg/m^3 density of steel
+rho = 7850*2; % kg/m^3 density of steel
 platform_mass = 20; % kg
 % set up cylinder height same as excenter arm (arbitrary value),
 % density as calculated to simulate reflected
@@ -107,7 +107,7 @@ linear_spring_constant = (2 * pi * f_resonance)^2 * M_eq;
 % linear_spring_offset = ((((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2) * g) + 120) / linear_spring_constant);
 linear_spring_offset = ((((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2) * g)) / linear_spring_constant);
 
-K_e = angular_spring_constant;
+K_e = angular_spring_constant; % ask rudy
 % Control parameters
 w_traj = f_resonance * 2 * pi; % trajectory frequency
 w_n = 5 * w_traj; % controller bandwidth (approx).

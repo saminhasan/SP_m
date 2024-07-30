@@ -3,7 +3,7 @@ function hexapod = get_params()
 
 % Excenter arm
 excenter.R = 0.08;   % excenter radius
-excenter.o = .00;   % excenter offset to universal joint
+excenter.o = 0.00;   % excenter offset to universal joint
 excenter.phi = atan2(excenter.o, excenter.R);
 
 % Connecting rod

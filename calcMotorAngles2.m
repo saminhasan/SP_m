@@ -1,7 +1,7 @@
 function [motorAngles, hexapod] = calcMotorAngles2(pose,hexapod)
-    translation = [pose.x, pose.y, pose.z];
-    rotation = -[pose.Rx, pose.Ry, pose.Rz];
-    translation = translation(:);
+    translation = [pose.x, pose.y, pose.z]';
+    rotation = -[pose.Rx, pose.Ry, pose.Rz]';
+
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
     base = hexapod.base;
