@@ -1,9 +1,9 @@
 clear all; clc; close all; %#ok<CLALL>
 tic
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData();
+[motorData, pose, tf, ts] = generateMotorData();
 % [motorData, pose, tf, ts] = rw();
-[motorData, pose, tf, ts] = rr();
+% [motorData, pose, tf, ts] = rr();
 f_resonance = 2/0.75; %
 % f_resonance = find_fft_peaks(pose);
 % calculate, for which all motor angles are zero
@@ -126,16 +126,3 @@ toc
 pose_filtered(out, pose, ts);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")
-
-% torque_calc_3d(out, N, rated_torque, peak_torque);
-
-% model_name = 'hp_v2.slx';
-% fprintf('>> Starting Simulation: %s\n', model_name); 
-% % Run the simulation and perform calculations
-% out = sim(model_name);
-% motion_comp(out, pose);
-% torque_calc(out, N, rated_torque, peak_torque);
-% disp(">>Done.")
-
-
-

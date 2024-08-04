@@ -1,12 +1,13 @@
 function [motorZeroy, q_rots] = calcQ()
-    % clc; clear all; %#ok<CLALL>
+    clc; clear all; %#ok<CLALL>
     hexapod = get_params();
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
     base = hexapod.base;
     platform = hexapod.platform;
 
-    excenter_vector = [0, 0, excenter.R];
+    excenter_vector = [0, excenter.h, excenter.b];
+    disp(excenter_vector);
     excenter_tips = zeros(3, length(base.beta)); % Preallocate the array
     for i = 1:6
         excenter_tips(:, i) = base.bearings(:, i) + roty(rad2deg(base.beta(i))) * excenter_vector';
@@ -15,16 +16,31 @@ function [motorZeroy, q_rots] = calcQ()
     dist_zx = (excenter_tips(3,:) - platform.bearings(3,:)).^2 + (excenter_tips(1,:) - platform.bearings(1,:)).^2;
     
     % Calculate y_zero
-    y_min = mean(sqrt(coupler.L^2 - dist_zx));
-    motorZeroy = y_min;
+    motorZeroy = mean(sqrt(coupler.L^2 - dist_zx)) + excenter.h;
+    platform.bearings(2,:) = motorZeroy ;
+
     q_rots = zeros(6, 4);
     U = [1, 0, 0]; % body frame
 
+    % for i = 1:6
+    %     bp = roty(rad2deg(base.beta(i) - pi/2)) \ (platform.bearings(:,i) - excenter_tips(:,i));
+    %     % Calculate quaternion
+    %     q_rots(i, :) = calculate_quaternion(U, bp);
+    % end
+    bt = excenter_tips - base.bearings;
+    tp = platform.bearings - excenter_tips;
+    bt =bt ./ vecnorm(bt, 2, 1);
+    
     for i = 1:6
-        platform.bearings(2,i) = motorZeroy;
-        bp = roty(rad2deg(base.beta(i) - pi/2)) \ (platform.bearings(:,i) - excenter_tips(:,i));
-        % Calculate quaternion
-        q_rots(i, :) = calculate_quaternion(U, bp);
+        ux = bt(:,i);
+        uz = (roty(rad2deg(   (pi/2)*(-1^i)    )))*ux;
+        uz = uz / norm(uz);
+        uy = -cross(ux,uz);
+        uy = uy / norm(uy);
+        u = [ux uy uz];
+        % disp([size(ux),size(uy),size(uz),size(u),size(tp(:,i))]);
+        v1 = u\tp(:,i);
+        q_rots(i, :) = calculate_quaternion(U, v1);
     end
     % Nested function to calculate quaternion
     function quaternion = calculate_quaternion(U, bp)
