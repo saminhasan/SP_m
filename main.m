@@ -21,28 +21,6 @@ f_resonance = 2/0.75; %
 % calculate, for which all motor angles are zero
 % and returns the quat of the couplers for the same condition.
 
-
-% Base points
-base_points = [
-    base.P12L(3), base.P12L(1);
-    base.P12R(3), base.P12R(1);
-    base.P23L(3), base.P23L(1);
-    base.P23R(3), base.P23R(1);
-    base.P31L(3), base.P31L(1);
-    base.P31R(3), base.P31R(1)
-    ];
-
-% Platform points
-platform_points = [
-    platform.P12L(3), platform.P12L(1);
-    platform.P12R(3), platform.P12R(1);
-    platform.P23L(3), platform.P23L(1);
-    platform.P23R(3), platform.P23R(1);
-    platform.P31L(3), platform.P31L(1);
-    platform.P31R(3), platform.P31R(1)
-    ];
-% plt_refs = atan2(platform_points(:,2),platform_points(:,1));
-plt_refs = rad2deg([-120, 60, 0, 180, 120, -60]);
 % Define colors for different servo arms
 red = [1 0 0];
 green = [0 1 0];
@@ -123,12 +101,33 @@ D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency
 
 
-model_name = 'hp_v4.slx';
-fprintf('>> Starting Simulation: %s\n', model_name);
-% Run the simulation and perform calculations
-out = sim(model_name);
+% Define model names
+model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
+
+% Specify which models to run by their index numbers
+model_indices = [3];  %
 toc
-motion_comp(out, pose);
-pose_filtered(out, pose, ts);
-torque_calc(out, N, rated_torque, peak_torque);
-disp(">>Done.")
+% Loop through each specified model and run the simulation
+for i = model_indices
+    model_name = model_names{i};
+    fprintf('>> Starting Simulation: %s\n', model_name);
+    
+    % Start timer
+    tic;
+    
+    % Run the simulation and perform calculations
+    out = sim(model_name);
+    toc;
+    
+    % Perform post-simulation tasks
+    motion_comp(out, pose);
+    pose_filtered(out, pose, ts);
+    torque_calc(out, N, rated_torque, peak_torque);
+    
+    % Display completion message for current model
+    fprintf('>> Done with model: %s\n\n', model_name);
+end
+
+disp('>> All simulations completed.');
+
+
