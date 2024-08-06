@@ -1,12 +1,17 @@
 clear all; clc; close all; %#ok<CLALL>
 tic
-[y_zero, q] = calcQ();
 % Hexapod components
 hexapod = get_params();
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
 platform = hexapod.platform;
+[y_zero, q] = calcQ();
+platform.bearings(2,:)  = y_zero;
+if excenter.o ~= 0
+    % q= calcQ_sim();
+    error("NotImplementedError");
+end
 % Generate motor data and initial pose
 % [motorData, pose, tf, ts] = generateMotorData(hexapod);
 % [motorData, pose, tf, ts] = rw(hexapod);
@@ -123,7 +128,7 @@ fprintf('>> Starting Simulation: %s\n', model_name);
 % Run the simulation and perform calculations
 out = sim(model_name);
 toc
-% motion_comp(out, pose);
+motion_comp(out, pose);
 pose_filtered(out, pose, ts);
 torque_calc(out, N, rated_torque, peak_torque);
 disp(">>Done.")

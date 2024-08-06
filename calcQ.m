@@ -15,7 +15,7 @@ function [motorZeroy, q_rots] = calcQ()
     
     % Calculate y_zero
     motorZeroy = mean(sqrt(coupler.L^2 - dist_zx)) + excenter.h;
-    platform.bearings(2,:) = motorZeroy ;
+    platform.bearings(2,:) = motorZeroy;
 
     q_rots = zeros(6, 4);
     U = [1, 0, 0]; % body frame
