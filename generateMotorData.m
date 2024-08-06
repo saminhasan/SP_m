@@ -1,5 +1,4 @@
-function [motorData, pose, tf, ts] = generateMotorData()
-hexapod = get_params();
+function [motorData, pose, tf, ts] = generateMotorData(hexapod)
 
 % Time setup
 tf = 4;

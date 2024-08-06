@@ -1,16 +1,14 @@
 function [motorZeroy, q_rots] = calcQ()
-    clc; clear all; %#ok<CLALL>
     hexapod = get_params();
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
     base = hexapod.base;
     platform = hexapod.platform;
 
-    excenter_vector = [0, excenter.h, excenter.b];
-    disp(excenter_vector);
-    excenter_tips = zeros(3, length(base.beta)); % Preallocate the array
+    excenter_vector = [0, excenter.h, excenter.b]';
+    excenter_tips = zeros(3, 6); % Preallocate the array
     for i = 1:6
-        excenter_tips(:, i) = base.bearings(:, i) + roty(rad2deg(base.beta(i))) * excenter_vector';
+        excenter_tips(:, i) = base.bearings(:, i) + roty(rad2deg(base.beta(i))) * excenter_vector;
     end
     % Calculate dist_xy
     dist_zx = (excenter_tips(3,:) - platform.bearings(3,:)).^2 + (excenter_tips(1,:) - platform.bearings(1,:)).^2;
@@ -22,11 +20,7 @@ function [motorZeroy, q_rots] = calcQ()
     q_rots = zeros(6, 4);
     U = [1, 0, 0]; % body frame
 
-    % for i = 1:6
-    %     bp = roty(rad2deg(base.beta(i) - pi/2)) \ (platform.bearings(:,i) - excenter_tips(:,i));
-    %     % Calculate quaternion
-    %     q_rots(i, :) = calculate_quaternion(U, bp);
-    % end
+
     bt = excenter_tips - base.bearings;
     tp = platform.bearings - excenter_tips;
     bt =bt ./ vecnorm(bt, 2, 1);
@@ -38,7 +32,6 @@ function [motorZeroy, q_rots] = calcQ()
         uy = -cross(ux,uz);
         uy = uy / norm(uy);
         u = [ux uy uz];
-        % disp([size(ux),size(uy),size(uz),size(u),size(tp(:,i))]);
         v1 = u\tp(:,i);
         q_rots(i, :) = calculate_quaternion(U, v1);
     end

@@ -1,13 +1,5 @@
 clear all; clc; close all; %#ok<CLALL>
 tic
-% Generate motor data and initial pose
-[motorData, pose, tf, ts] = generateMotorData();
-% [motorData, pose, tf, ts] = rw();
-% [motorData, pose, tf, ts] = rr();
-f_resonance = 2/0.75; %
-% f_resonance = find_fft_peaks(pose);
-% calculate, for which all motor angles are zero
-% and returns the quat of the couplers for the same condition.
 [y_zero, q] = calcQ();
 % Hexapod components
 hexapod = get_params();
@@ -15,6 +7,15 @@ excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
 platform = hexapod.platform;
+% Generate motor data and initial pose
+% [motorData, pose, tf, ts] = generateMotorData(hexapod);
+% [motorData, pose, tf, ts] = rw(hexapod);
+[motorData, pose, tf, ts] = rr(hexapod);
+f_resonance = 2/0.75; %
+% f_resonance = find_fft_peaks(pose);
+% calculate, for which all motor angles are zero
+% and returns the quat of the couplers for the same condition.
+
 
 % Base points
 base_points = [
@@ -36,7 +37,7 @@ platform_points = [
     platform.P31R(3), platform.P31R(1)
     ];
 % plt_refs = atan2(platform_points(:,2),platform_points(:,1));
-plt_refs = rad2deg([-120, 60,0, 180, 120, -60]);
+plt_refs = rad2deg([-120, 60, 0, 180, 120, -60]);
 % Define colors for different servo arms
 red = [1 0 0];
 green = [0 1 0];

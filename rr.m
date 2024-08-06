@@ -1,5 +1,4 @@
-function [motorData, pose, tf, ts] = rr()
-    hexapod = get_params();
+function [motorData, pose, tf, ts] = rr(hexapod)
 
     [y_zero, ~] = calcQ();
     tf = 7.5;
@@ -58,8 +57,9 @@ function [motorData, pose, tf, ts] = rr()
     %     motorAngles(i, :) = calcMotorAngles(pose(i));
     % end
     % Calculate smoothstep values for the ramp up and ramp down
-    ramp_up = smoothstep(extended_time_sec, 0, 0.5);
-    ramp_down = 1 - smoothstep(extended_time_sec, tf-0.5, tf);
+    rt = 1;
+    ramp_up = smoothstep(extended_time_sec, 0, rt);
+    ramp_down = 1 - smoothstep(extended_time_sec, tf-rt, tf);
     % Apply the smoothing to the data
     for i = 1:length(extended_time_sec)
         % Store values in the pose struct array

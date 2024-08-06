@@ -36,6 +36,7 @@ base.P31L = base.corner3 + (base.corner1 - base.corner3) / sqrt(dot(base.corner1
 base.P31R = base.corner1 - (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
 base.bearings = [base.P12L, base.P12R, base.P23L, base.P23R, base.P31L, base.P31R];
 base.beta = deg2rad([-30,150, 90, 270, 210, 390]);
+base.beta_sim = base.beta - (pi/2);
 
 % Platform triangle
 platform.L = 0.3; % Length of base
@@ -66,8 +67,4 @@ hexapod.excenter = excenter;
 hexapod.coupler = coupler;
 hexapod.base = base;
 hexapod.platform = platform;
-% sqrt(base.bearings(:,1)^2 + base.bearings(:,3)^2)
-% sqrt(platform.bearings(:,1)^2 + platform.bearings(:,3)^2)
-% base.bearings
-% platform.bearings
 end

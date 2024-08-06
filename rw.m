@@ -1,5 +1,4 @@
-function [motorData, pose, tf, ts] = rw()
-    hexapod = get_params();
+function [motorData, pose, tf, ts] = rw(hexapod)
     ts = 1/240;
     [y_zero, ~] = calcQ();
     file_name = 'Traj.csv';
