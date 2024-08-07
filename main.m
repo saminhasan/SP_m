@@ -10,7 +10,7 @@ platform = hexapod.platform;
 platform.bearings(2,:)  = y_zero;
 if excenter.o ~= 0
     % q= calcQ_sim();
-    error("NotImplementedError");
+    % error("Not Implemented Error.");
 end
 % Generate motor data and initial pose
 % [motorData, pose, tf, ts] = generateMotorData(hexapod);
@@ -105,7 +105,7 @@ w_f = w_n * 10; % filter frequency
 model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
 
 % Specify which models to run by their index numbers
-model_indices = [3];  %
+model_indices = [3];  %#ok<NBRAK2> %
 toc
 % Loop through each specified model and run the simulation
 for i = model_indices

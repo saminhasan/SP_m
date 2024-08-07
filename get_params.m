@@ -3,7 +3,7 @@ function hexapod = get_params()
 
 % Excenter arm
 excenter.R = 0.08;   % excenter radius
-excenter.o = 0.0;   % excenter offset to universal joint
+excenter.o = 0.02;   % excenter offset to universal joint
 excenter.phi = atan2(excenter.o, excenter.R);
 excenter.h = excenter.R * sin(excenter.phi);
 excenter.b = excenter.R * cos(excenter.phi);
