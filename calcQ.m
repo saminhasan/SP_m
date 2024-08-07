@@ -1,4 +1,5 @@
 function [motorZeroy, q_rots] = calcQ()
+    q_rots = zeros(6, 4);
     hexapod = get_params();
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
@@ -17,7 +18,6 @@ function [motorZeroy, q_rots] = calcQ()
     motorZeroy = mean(sqrt(coupler.L^2 - dist_zx)) + excenter.h;
     platform.bearings(2,:) = motorZeroy;
 
-    q_rots = zeros(6, 4);
     U = [1, 0, 0]; % body frame
 
 

@@ -1,5 +1,5 @@
 clear all; clc; close all; %#ok<CLALL>
-tic
+
 % Hexapod components
 hexapod = get_params();
 excenter = hexapod.excenter;
@@ -9,7 +9,9 @@ platform = hexapod.platform;
 [y_zero, q] = calcQ();
 platform.bearings(2,:)  = y_zero;
 if excenter.o ~= 0
-    % q= calcQ_sim();
+    tic
+    q= calcQ_sim();
+    toc
     % error("Not Implemented Error.");
 end
 % Generate motor data and initial pose
@@ -104,30 +106,19 @@ w_f = w_n * 10; % filter frequency
 % Define model names
 model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
 
-% Specify which models to run by their index numbers
-model_indices = [3];  %#ok<NBRAK2> %
-toc
-% Loop through each specified model and run the simulation
+model_indices = [4];  %#ok<NBRAK2> %
+
 for i = model_indices
+    tic;
     model_name = model_names{i};
     fprintf('>> Starting Simulation: %s\n', model_name);
-    
-    % Start timer
-    tic;
-    
-    % Run the simulation and perform calculations
     out = sim(model_name);
-    toc;
-    
-    % Perform post-simulation tasks
     motion_comp(out, pose);
     pose_filtered(out, pose, ts);
     torque_calc(out, N, rated_torque, peak_torque);
-    
-    % Display completion message for current model
     fprintf('>> Done with model: %s\n\n', model_name);
+    toc;
+
 end
 
 disp('>> All simulations completed.');
-
-
