@@ -1,23 +1,16 @@
 clear all; clc; close all; %#ok<CLALL>
-
 % Hexapod components
 hexapod = get_params();
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
 platform = hexapod.platform;
-[y_zero, q] = calcQ();
-platform.bearings(2,:)  = y_zero;
-if excenter.o ~= 0
-    tic
-    q= calcQ_sim();
-    toc
-    % error("Not Implemented Error.");
-end
+[y_home, q] = calcQ(hexapod);
+
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData(hexapod);
-% [motorData, pose, tf, ts] = rw(hexapod);
-[motorData, pose, tf, ts] = rr(hexapod);
+% [motorData, pose, tf, ts] = generateMotorData(hexapod, y_home);
+% [motorData, pose, tf, ts] = rw(hexapod, y_home);
+[motorData, pose, tf, ts] = rr(hexapod, y_home);
 f_resonance = 2/0.75; %
 % f_resonance = find_fft_peaks(pose);
 % calculate, for which all motor angles are zero
@@ -106,7 +99,7 @@ w_f = w_n * 10; % filter frequency
 % Define model names
 model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
 
-model_indices = [4];  %#ok<NBRAK2> %
+model_indices = [1:4];  %#ok<NBRAK2> %
 
 for i = model_indices
     tic;

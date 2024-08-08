@@ -1,6 +1,5 @@
-function [motorData, pose, tf, ts] = rw(hexapod)
+function [motorData, pose, tf, ts] = rw(hexapod, y_home)
     ts = 1/240;
-    [y_zero, ~] = calcQ();
     file_name = 'Traj.csv';
     
     % Reading the file while skipping the unnecessary header rows
@@ -63,7 +62,7 @@ function [motorData, pose, tf, ts] = rw(hexapod)
     ramp_down = 1 - smoothstep(time0, tf-0.5, tf);
     for i = 1:N
         pose(i).x = cg_centered(i, 1)* ramp_up(i) * ramp_down(i);
-        pose(i).y = (cg_centered(i, 2)* ramp_up(i) * ramp_down(i)) + y_zero;
+        pose(i).y = (cg_centered(i, 2)* ramp_up(i) * ramp_down(i)) + y_home;
         pose(i).z = cg_centered(i, 3)* ramp_up(i) * ramp_down(i);
         pose(i).Rx = Rx_centered(i)* ramp_up(i) * ramp_down(i);
         pose(i).Ry = Ry_centered(i)* ramp_up(i) * ramp_down(i);

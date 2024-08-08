@@ -1,6 +1,5 @@
-function [motorZeroy, q_rots] = calcQ()
+function [motorZeroy, q_rots] = calcQ(hexapod)
     q_rots = zeros(6, 4);
-    hexapod = get_params();
     excenter = hexapod.excenter;
     coupler = hexapod.coupler;
     base = hexapod.base;
@@ -21,32 +20,19 @@ function [motorZeroy, q_rots] = calcQ()
     U = [1, 0, 0]; % body frame
 
 
-    bt = excenter_tips - base.bearings;
+    % bt = excenter_tips - base.bearings;
     tp = platform.bearings - excenter_tips;
-    bt =bt ./ vecnorm(bt, 2, 1);
+    % bt =bt ./ vecnorm(bt, 2, 1);
     
     for i = 1:6
-        ux = bt(:,i);
-        uz = (roty(rad2deg(   (pi/2)*(-1^i)    )))*ux;
-        uz = uz / norm(uz);
-        uy = -cross(ux,uz);
-        uy = uy / norm(uy);
+        ux = roty(rad2deg(base.beta(i)))*[0, 0, 1]';
+        uy = [0, 1, 0]';
+        uz = cross(ux, uy);
+        ux = rodrigues_rot(ux, uz, excenter.phi);
+        uy = rodrigues_rot(uy, uz, excenter.phi);
+
         u = [ux uy uz];
         v1 = u\tp(:,i);
         q_rots(i, :) = calculate_quaternion(U, v1);
     end
 end
-
-% motorZeroy =
-% 
-%    0.263438797446390
-% 
-% 
-% q_rots =
-% 
-%    0.582482372510718                   0  -0.091970900922745   0.807623451304966
-%    0.582482372510718                   0   0.091970900922745   0.807623451304966
-%    0.582482372510718                   0  -0.091970900922745   0.807623451304966
-%    0.582482372510718                   0   0.091970900922745   0.807623451304966
-%    0.582482372510718                   0  -0.091970900922745   0.807623451304966
-%    0.582482372510718                   0   0.091970900922745   0.807623451304966

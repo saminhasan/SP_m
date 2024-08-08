@@ -1,6 +1,5 @@
-function [motorData, pose, tf, ts] = rr(hexapod)
+function [motorData, pose, tf, ts] = rr(hexapod,y_home)
 
-    [y_zero, ~] = calcQ();
     tf = 7.5;
     
     % Specify the filename
@@ -46,7 +45,7 @@ function [motorData, pose, tf, ts] = rr(hexapod)
     % for i = 1:length(extended_time_sec)
     %     % Store values in the pose struct array
     %     pose(i).x = 0;
-    %     pose(i).y = extended_z_measured_m(i) + y_zero;
+    %     pose(i).y = extended_z_measured_m(i) + y_home;
     %     pose(i).z = 0;
     %     pose(i).Rx = deg2rad(extended_y_measured_deg(i));
     %     pose(i).Ry = deg2rad(extended_z_measured_deg(i));
@@ -64,7 +63,7 @@ function [motorData, pose, tf, ts] = rr(hexapod)
     for i = 1:length(extended_time_sec)
         % Store values in the pose struct array
         pose(i).x = 0;
-        pose(i).y = (extended_z_measured_m(i) * ramp_up(i) * ramp_down(i))  + y_zero;
+        pose(i).y = (extended_z_measured_m(i) * ramp_up(i) * ramp_down(i))  + y_home;
         pose(i).z = 0;
         pose(i).Rx = deg2rad(extended_y_measured_deg(i)) * ramp_up(i) * ramp_down(i);
         pose(i).Ry = deg2rad(extended_z_measured_deg(i)) * ramp_up(i) * ramp_down(i);
