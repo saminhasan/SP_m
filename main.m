@@ -13,8 +13,7 @@ platform = hexapod.platform;
 [motorData, pose, tf, ts] = rr(hexapod, y_home);
 f_resonance = 2/0.75; %
 % f_resonance = find_fft_peaks(pose);
-% calculate, for which all motor angles are zero
-% and returns the quat of the couplers for the same condition.
+
 
 % Define colors for different servo arms
 red = [1 0 0];
@@ -99,7 +98,7 @@ w_f = w_n * 10; % filter frequency
 % Define model names
 model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
 
-model_indices = [1:4];  %#ok<NBRAK2> %
+model_indices = [4];  %#ok<NBRAK2> %
 
 for i = model_indices
     tic;

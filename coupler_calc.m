@@ -1,4 +1,4 @@
-cd = out.hj.Data; % Assuming this is your input 3D array
+cd = out.hj.Data; %  input 3D array
 [N, ~, numTimeSteps] = size(cd); % Get the dimensions of the input array
 
 % Initialize an array to store the Euler angles
