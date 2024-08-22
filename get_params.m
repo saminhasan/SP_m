@@ -2,13 +2,13 @@ function hexapod = get_params()
 % param start
 
 % Excenter arm
-excenter.R = 0.08;   % excenter radius
-excenter.o = 0.02;   % excenter offset to universal joint
+excenter.R = 0.1;   % excenter radius
+excenter.o = 0.00;   % excenter offset to universal joint
 excenter.phi = atan2(excenter.o, excenter.R);
 excenter.h = excenter.R * sin(excenter.phi);
 excenter.b = excenter.R * cos(excenter.phi);
 % Connecting rod
-coupler.L = (.02 + .12) * 2;
+coupler.L = (.02 + .12) * 2.4;
 
 % Base and platform triangles are in the Z-X plane, with one side parallel to X
 base.L = 0.3; % Length of base
@@ -16,7 +16,7 @@ base.h = sqrt(base.L^2 - (base.L / 2)^2);
 base.ri = base.h / 3; % Inkreisradius
 base.ro = 2 * base.ri; % Umkreisradius
 base.bearingwidth = 0.03;
-base.l = 0.12; % Offset of bearings from corners
+base.l = 0.1; % Offset of bearings from corners
 base.Center = [0; 0; 0]; % Center point
 base.orientation = [0, 120, 240] * pi / 180; % Corner directions referenced to z !! First corner in z direction!!
 

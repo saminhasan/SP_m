@@ -41,7 +41,7 @@ function [] = motion_comp(out, pose)
     % hold off;
 
     % Plot position and orientation components separately
-    figure;
+    figure('Name', 'pose vs Time (s)', 'NumberTitle', 'off');
 
     subplot(3,2,1);
     hold on;

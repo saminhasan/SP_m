@@ -1,4 +1,4 @@
-function [] = torque_calc(out, N, rated_torque, peak_torque)
+function max_dynamic_torque = torque_calc(out, N, rated_torque, peak_torque)
 
 colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
@@ -16,7 +16,7 @@ omegas_rpm_motor = omegas * (60 / (2 * pi))* N;
 tau_motor =  taus_load / N; % torque required in motor frame
 % Calculate power (P = τ * ω)
 power_motor = tau_motor .* omegas_rad_motor; % Power in watts
-
+max_dynamic_torque = max(max(taus_load));
 % % Define the time range
 % T1 = 1;
 % T2 = 3;
@@ -29,7 +29,7 @@ power_motor = tau_motor .* omegas_rad_motor; % Power in watts
 % power_motor = power_motor(masked_time_indices, :);
 
 % plot motor T omega Nm and RPM
-figure;
+figure('Name', 'Torque (Nm) vs Angular Velocity (RPM)', 'NumberTitle', 'off');
 hold on;
 plots = gobjects(1, 6); 
 labels = cell(1, 6);
@@ -55,7 +55,7 @@ title('Torque (Nm) vs Angular Velocity (RPM)');
 grid on;grid minor;
 hold off;
 
-figure;
+figure('Name', 'Torque (Nm) vs Time (s)', 'NumberTitle', 'off');
 hold on;
 time_plots = gobjects(1, 6); 
 for i = 1:6
@@ -79,7 +79,7 @@ title('Torque (Nm) vs Time (s)');
 grid on;grid minor;
 hold off;
 
-figure;
+figure('Name', 'Power (W) vs Time (s)', 'NumberTitle', 'off');
 hold on;
 time_plots = gobjects(1, 6); 
 for i = 1:6

@@ -1,21 +1,21 @@
 function [motorData, pose, tf, ts] = rr(hexapod,y_home)
-
+    
     tf = 7.5;
     
     % Specify the filename
-    filename = 'Rots_raw.csv'; 
-    % filename = 'Rots_fund.csv'; 
-
+    filename = 'Rots_raw.csv';
+    % filename = 'Rots_fund.csv';
+    
     % Read the CSV file
     data = readtable(filename, 'CommentStyle','#');
-
+    
     % Extract data into variables
     time_sec = data{:, 'time'};
     z_measured_deg = data{:, 'Z_rot'};
     x_measured_deg = data{:, 'X_rot'};
     y_measured_deg = data{:, 'Y_rot'};
     z_measured_m = data{:, 'Z'};
-
+    
     % Calculate the time step
     ts = time_sec(2) - time_sec(1);
     
@@ -28,7 +28,7 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
     extended_x_measured_deg = zeros(num_rows, 1);
     extended_y_measured_deg = zeros(num_rows, 1);
     extended_z_measured_m = zeros(num_rows, 1);
-
+    
     % Fill the preallocated arrays
     for i = 1:num_rows
         index = mod(i-1, length(time_sec)) + 1;
@@ -38,9 +38,9 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
         extended_y_measured_deg(i) = y_measured_deg(index) - mean(y_measured_deg);
         extended_z_measured_m(i) = z_measured_m(index) - mean(z_measured_m);
     end
-
+    
     % Preallocate motorAngles array
-    motorAngles = zeros(length(extended_time_sec), 6); 
+    motorAngles = zeros(length(extended_time_sec), 6);
     pose(length(extended_time_sec)) = struct('x', [], 'y', [], 'z', [], 'Rx', [], 'Ry', [], 'Rz', [], 'time0', []);
     % for i = 1:length(extended_time_sec)
     %     % Store values in the pose struct array
@@ -51,7 +51,7 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
     %     pose(i).Ry = deg2rad(extended_z_measured_deg(i));
     %     pose(i).Rz = deg2rad(extended_x_measured_deg(i));
     %     pose(i).time0 = extended_time_sec(i);
-    % 
+    %
     %     % Call calcMotorAngles with the current pose
     %     motorAngles(i, :) = calcMotorAngles(pose(i));
     % end
@@ -73,37 +73,56 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
         % Call calcMotorAngles with the current pose
         [motorAngles(i, :),~] = calcMotorAngles3(pose(i), hexapod);
     end
-motorData = [extended_time_sec, -motorAngles(:,1), -motorAngles(:,2), ...
-             -motorAngles(:,3), -motorAngles(:,4), ...
-             -motorAngles(:,5), -motorAngles(:,6)];
-    % % Plot all extended variables vs time
-    % figure;
-    % plot(extended_time_sec, extended_z_measured_deg);
-    % title('Z Measured (deg) vs Time');
-    % xlabel('Time (s)');
-    % ylabel('Z Measured (deg)');
-    % grid on;
-    % 
-    % figure;
-    % plot(extended_time_sec, extended_x_measured_deg);
-    % title('X Measured (deg) vs Time');
-    % xlabel('Time (s)');
-    % ylabel('X Measured (deg)');
-    % grid on;
-    % 
-    % figure;
-    % plot(extended_time_sec, extended_y_measured_deg);
-    % title('Y Measured (deg) vs Time');
-    % xlabel('Time (s)');
-    % ylabel('Y Measured (deg)');
-    % grid on;
-    % 
-    % figure;
-    % plot(extended_time_sec, extended_z_measured_m);
-    % title('Z Measured (m) vs Time');
-    % xlabel('Time (s)');
-    % ylabel('Z Measured (m)');
-    % grid on;
+    motorData = [extended_time_sec, -motorAngles(:,1), -motorAngles(:,2), ...
+        -motorAngles(:,3), -motorAngles(:,4), ...
+        -motorAngles(:,5), -motorAngles(:,6)];
+    figure('Name', 'Motor Angles (degrees) vs Time (s)', 'NumberTitle', 'off');
+    hold on;
+    angle_plots = gobjects(1, 6);
+    labels = cell(1, 6);
+    colors = ['r', 'g', 'b', 'm', 'c', 'k'];
+    for i = 1:6
+        % Plot motor angles vs time for each motor
+        angle_plots(i) = plot(extended_time_sec, rad2deg(-motorAngles(:,i)), 'Color', colors(i));
+        labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
+    end
+    % Add legend with motor labels
+    legend(angle_plots, labels, 'Location', 'northwest');
+    
+    xlabel('Time (s)');
+    ylabel('Motor Angles (degrees)');
+    title('Motor Angles (degrees) vs Time (s)');
+    grid on;grid minor;
+    hold off;
+
+% % Plot all extended variables vs time
+% figure;
+% plot(extended_time_sec, extended_z_measured_deg);
+% title('Z Measured (deg) vs Time');
+% xlabel('Time (s)');
+% ylabel('Z Measured (deg)');
+% grid on;
+%
+% figure;
+% plot(extended_time_sec, extended_x_measured_deg);
+% title('X Measured (deg) vs Time');
+% xlabel('Time (s)');
+% ylabel('X Measured (deg)');
+% grid on;
+%
+% figure;
+% plot(extended_time_sec, extended_y_measured_deg);
+% title('Y Measured (deg) vs Time');
+% xlabel('Time (s)');
+% ylabel('Y Measured (deg)');
+% grid on;
+%
+% figure;
+% plot(extended_time_sec, extended_z_measured_m);
+% title('Z Measured (m) vs Time');
+% xlabel('Time (s)');
+% ylabel('Z Measured (m)');
+% grid on;
 
 
 

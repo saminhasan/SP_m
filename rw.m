@@ -75,4 +75,22 @@ function [motorData, pose, tf, ts] = rw(hexapod, y_home)
     motorData = [time0, -motorAngles(:,1), -motorAngles(:,2), ...
                  -motorAngles(:,3), -motorAngles(:,4), ...
                  -motorAngles(:,5), -motorAngles(:,6)];
+    figure('Name', 'Motor Angles (degrees) vs Time (s)', 'NumberTitle', 'off');
+    hold on;
+    angle_plots = gobjects(1, 6);
+    labels = cell(1, 6);
+    colors = ['r', 'g', 'b', 'm', 'c', 'k'];
+    for i = 1:6
+        % Plot motor angles vs time for each motor
+        angle_plots(i) = plot(time0, rad2deg(-motorAngles(:,i)), 'Color', colors(i));
+        labels{i} = ['Motor ' num2str(i)]; % Store labels in a cell array
+    end
+    % Add legend with motor labels
+    legend(angle_plots, labels, 'Location', 'northwest');
+    
+    xlabel('Time (s)');
+    ylabel('Motor Angles (degrees)');
+    title('Motor Angles (degrees) vs Time (s)');
+    grid on;grid minor;
+    hold off;
 end

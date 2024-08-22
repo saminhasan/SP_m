@@ -1,9 +1,9 @@
 % function [] =plot_csv ()
-    tf = 7.5;
+    clear all; clc; close all; %#ok<CLALL>
     
     % Specify the filename
-    % filename = 'Rots_raw.csv'; 
-    filename = 'Rots_fund.csv'; 
+    filename = 'Rots_raw.csv'; 
+    % filename = 'Rots_fund.csv'; 
 
     % Read the CSV file
     data = readtable(filename, 'CommentStyle','#');
@@ -17,7 +17,8 @@
 
     % Calculate the time step
     ts = time_sec(2) - time_sec(1);
-    
+    tf = ts * 100* 2;
+
     % Calculate the number of rows needed to reach tf
     num_rows = ceil(tf / ts) + 1;
     

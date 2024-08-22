@@ -29,7 +29,7 @@ function pose_filtered(out, pose, ts)
     Rzf = filt(Rz, ts);
 
     % Plot the results
-    figure;
+    figure('Name', 'pose vs Time (s)', 'NumberTitle', 'off');
 
     subplot(3,2,1);
     hold on;

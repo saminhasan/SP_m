@@ -26,20 +26,15 @@ magenta = [1 0 1];
 % Motor parameters
 efficiency = 0.9;
 % N = 36; % gear ratio
+% J_m = 12e-6; % motor inertia in motor frame
 % peak_torque = 0.4*efficiency; % motor peak torque in motor frame
 % rated_torque = 0.27*efficiency; % motor rated torque in motor frame
-% J_m = 12e-6; % motor inertia in motor frame
 
 N = 9; % MIT gear ratio*********************
+J_m = 12e-5; % mit motor inertia in motor frame
 peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
 rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
-J_m = 12e-5; % mit motor inertia in motor frame
 
-%RMD-X8-P9-25
-% N = 10; % gear ratio
-% peak_torque = (20/9)*efficiency; % motor peak torque in motor frame
-% rated_torque = (10/9)*efficiency; % motor rated torque in motor frame
-% J_m = 20e-4/N; % motor inertia in motor frame
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
 rho = 7850*2; % kg/m^3 density of steel
@@ -62,7 +57,7 @@ J_mr = J_m * N^2; % motor inertia in robot frame.
 J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot frame
 % total inertia in robot frame
 J_e = (J_mr + J_r);
-
+disp(['Inertia Ratio : ', num2str(J_r/J_mr)])
 % angular spring properties
 % holding torque required to hold platform at zero motor angle using angular springs.
 tau_0 = ((platform_mass / 6) * g * excenter.R) + (excenter_mass * g * excenter.R / 2) ...
@@ -98,7 +93,7 @@ w_f = w_n * 10; % filter frequency
 % Define model names
 model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
 
-model_indices = [4];  %#ok<NBRAK2> %
+model_indices = [2,4];  % %
 
 for i = model_indices
     tic;
@@ -107,7 +102,8 @@ for i = model_indices
     out = sim(model_name);
     motion_comp(out, pose);
     pose_filtered(out, pose, ts);
-    torque_calc(out, N, rated_torque, peak_torque);
+    max_dynamic_torque = torque_calc(out, N, rated_torque, peak_torque);
+    disp(['Max dynamic Force : ', num2str(max_dynamic_torque/excenter.R), ' N']);
     fprintf('>> Done with model: %s\n\n', model_name);
     toc;
 
