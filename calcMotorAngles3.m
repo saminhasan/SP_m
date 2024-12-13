@@ -17,5 +17,4 @@ function [motorAngles, hexapod] = calcMotorAngles3(pose,hexapod)
     ek = ( -(r* l(1, :).*sin(base.beta)) +(h*l(2, :)) - (r*l(3, :).*cos(base.beta))) ;
     fk = ((h*l(1, :).*sin(base.beta)) + (r*l(2, :)) + (h*l(3, :).*cos(base.beta)) );
     motorAngles = -( asin(g ./ sqrt(ek.^2 + fk.^2)) - atan2(fk, ek));
-
 end

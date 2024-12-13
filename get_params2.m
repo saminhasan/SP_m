@@ -1,4 +1,4 @@
-function hexapod = get_params()
+function hexapod = get_params2()
 % param start
 
 % Excenter arm
@@ -9,15 +9,15 @@ excenter.h = excenter.R * sin(excenter.phi);
 excenter.b = excenter.R * cos(excenter.phi);
 % Connecting rod
 % coupler.L = (.02 + .12) * 2.4;
-coupler.L = (14.13 * 25.4)/1000;
+coupler.L = (358.78)/1000;
 
 % Base and platform triangles are in the Z-X plane, with one side parallel to X
-base.L = 0.35; % Length of base
+base.L = (24 * 25.4)/1000; % Length of base
 base.h = sqrt(base.L^2 - (base.L / 2)^2);
 base.ri = base.h / 3; % Inkreisradius
 base.ro = 2 * base.ri; % Umkreisradius
-base.bearingwidth = 0.021;
-base.l = 0.12; % Offset of bearings from corners
+base.bearingwidth = -(57.31)/1000;
+base.l = 251.8/1000; % Offset of motors from corners
 base.Center = [0; 0; 0]; % Center point
 base.orientation = [0, 120, 240] * pi / 180; % Corner directions referenced to z !! First corner in z direction!!
 
@@ -36,11 +36,11 @@ base.P23R = base.corner3 - (base.corner3 - base.corner2) / sqrt(dot(base.corner3
 base.P31L = base.corner3 + (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
 base.P31R = base.corner1 - (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
 base.bearings = [base.P12L, base.P12R, base.P23L, base.P23R, base.P31L, base.P31R];
-base.beta = deg2rad([-30,150, 90, 270, 210, 390]);
+base.beta = deg2rad([-30,150, 90, 270, 210, 390]);%+ [pi/2, - pi/2, pi/2, - pi/2, pi/2, - pi/2];
 base.beta_sim = base.beta - (pi/2);
 
 % Platform triangle
-platform.L = 0.3; % Length of base
+platform.L = 0.305; % Length of base
 platform.h = sqrt(platform.L^2 - (platform.L / 2)^2);
 platform.ri = platform.h / 3; % Umkreisradius
 platform.ro = 2 * platform.ri; % Inkreisradius

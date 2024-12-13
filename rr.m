@@ -38,7 +38,7 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
         extended_y_measured_deg(i) = y_measured_deg(index) - mean(y_measured_deg);
         extended_z_measured_m(i) = z_measured_m(index) - mean(z_measured_m);
     end
-    
+
     % Preallocate motorAngles array
     motorAngles = zeros(length(extended_time_sec), 6);
     pose(length(extended_time_sec)) = struct('x', [], 'y', [], 'z', [], 'Rx', [], 'Ry', [], 'Rz', [], 'time0', []);
@@ -56,6 +56,10 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
     %     motorAngles(i, :) = calcMotorAngles(pose(i));
     % end
     % Calculate smoothstep values for the ramp up and ramp down
+    % extended_z_measured_m = compute_position(extended_z_measured_m, ts, height(data):height(data):num_rows - height(data));
+    % extended_y_measured_deg = compute_position(extended_y_measured_deg, ts, height(data):height(data):num_rows- height(data));
+    % extended_z_measured_deg = compute_position(extended_z_measured_deg, ts, height(data):height(data):num_rows- height(data));
+    % extended_x_measured_deg = compute_position(extended_x_measured_deg, ts, height(data):height(data):num_rows- height(data));
     rt = 1;
     ramp_up = smoothstep(extended_time_sec, 0, rt);
     ramp_down = 1 - smoothstep(extended_time_sec, tf-rt, tf);
@@ -88,35 +92,35 @@ function [motorData, pose, tf, ts] = rr(hexapod,y_home)
     end
     % Add legend with motor labels
     legend(angle_plots, labels, 'Location', 'northwest');
-    
+
     xlabel('Time (s)');
     ylabel('Motor Angles (degrees)');
     title('Motor Angles (degrees) vs Time (s)');
     grid on;grid minor;
     hold off;
 
-% % Plot all extended variables vs time
+% Plot all extended variables vs time
 % figure;
 % plot(extended_time_sec, extended_z_measured_deg);
 % title('Z Measured (deg) vs Time');
 % xlabel('Time (s)');
 % ylabel('Z Measured (deg)');
 % grid on;
-%
+% 
 % figure;
 % plot(extended_time_sec, extended_x_measured_deg);
 % title('X Measured (deg) vs Time');
 % xlabel('Time (s)');
 % ylabel('X Measured (deg)');
 % grid on;
-%
+% 
 % figure;
 % plot(extended_time_sec, extended_y_measured_deg);
 % title('Y Measured (deg) vs Time');
 % xlabel('Time (s)');
 % ylabel('Y Measured (deg)');
 % grid on;
-%
+% 
 % figure;
 % plot(extended_time_sec, extended_z_measured_m);
 % title('Z Measured (m) vs Time');

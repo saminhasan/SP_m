@@ -1,6 +1,6 @@
 clear all; clc; close all; %#ok<CLALL>
 % Hexapod components
-hexapod = get_params();
+hexapod = get_params2();
 excenter = hexapod.excenter;
 coupler = hexapod.coupler;
 base = hexapod.base;
@@ -8,9 +8,9 @@ platform = hexapod.platform;
 [y_home, q] = calcQ(hexapod);
 
 % Generate motor data and initial pose
-% [motorData, pose, tf, ts] = generateMotorData(hexapod, y_home);
+[motorData, pose, tf, ts] = generateMotorData(hexapod, y_home);
 % [motorData, pose, tf, ts] = rw(hexapod, y_home);
-[motorData, pose, tf, ts] = rr(hexapod, y_home);
+% [motorData, pose, tf, ts] = rr(hexapod, y_home);
 f_resonance = 2/0.75; %
 % f_resonance = find_fft_peaks(pose);
 
@@ -25,20 +25,20 @@ magenta = [1 0 1];
 
 % Motor parameters
 efficiency = 0.9;
-% N = 36; % gear ratio
-% J_m = 12e-6; % motor inertia in motor frame
-% peak_torque = 0.4*efficiency; % motor peak torque in motor frame
-% rated_torque = 0.27*efficiency; % motor rated torque in motor frame
+N = 36; % gear ratio
+J_m = 12e-6; % motor inertia in motor frame
+peak_torque = 0.4*efficiency; % motor peak torque in motor frame
+rated_torque = 0.27*efficiency; % motor rated torque in motor frame
 
-N = 9; % MIT gear ratio*********************
-J_m = 12e-5; % mit motor inertia in motor frame
-peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
-rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
+% N = 9; % MIT gear ratio*********************
+% J_m = 12e-5; % mit motor inertia in motor frame
+% peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
+% rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
 
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
 rho = 7850*2; % kg/m^3 density of steel
-platform_mass = 20; % kg
+platform_mass = 30; % kg
 % set up cylinder height same as excenter arm (arbitrary value),
 % density as calculated to simulate reflected
 height = excenter.R;
@@ -93,20 +93,20 @@ w_f = w_n * 10; % filter frequency
 % Define model names
 model_names = {'hp_v1.slx', 'hp_v2.slx', 'hp_v3.slx', 'hp_v4.slx'};
 
-model_indices = [2,4];  % %
+model_indices = [4];  %#ok<NBRAK2> % %
 
 for i = model_indices
     tic;
     model_name = model_names{i};
     fprintf('>> Starting Simulation: %s\n', model_name);
     out = sim(model_name);
-    motion_comp(out, pose);
-    pose_filtered(out, pose, ts);
+    % motion_comp(out, pose);
+    % pose_filtered(out, pose, ts);
     max_dynamic_torque = torque_calc(out, N, rated_torque, peak_torque);
-    disp(['Max dynamic Force : ', num2str(max_dynamic_torque/excenter.R), ' N']);
+    % disp(['Max dynamic torque : ', num2str(max_dynamic_torque/N), ' Nm']);
+    % disp(['Max dynamic Force : ', num2str(max_dynamic_torque/excenter.R), ' N']);
     fprintf('>> Done with model: %s\n\n', model_name);
     toc;
-
 end
 
 disp('>> All simulations completed.');

@@ -7,7 +7,8 @@ colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
 
 %retrive simulation data
-sim_time = out.simout.Time; 
+sim_time = out.simout.Time;
+thetas = out.simout.Data(:, (2:4:22)-1); %#ok<NASGU>
 omegas = out.simout.Data(:, 2:4:22);
 alphas = out.simout.Data(:, (2:4:22)+1); %#ok<NASGU>
 taus_load = out.simout.Data(:, (2:4:22) + 2);
