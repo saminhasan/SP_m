@@ -9,7 +9,6 @@ function plotIMUData(imu_data)
     y_ang_vel = deg2rad(imu_data(:, 6)); % Y Angular Velocity (rad/s)
     z_ang_vel = deg2rad(imu_data(:, 7)); % Z Angular Velocity (rad/s)
 
-    % Create figure
     figure;
 
     % Linear Acceleration Subplot

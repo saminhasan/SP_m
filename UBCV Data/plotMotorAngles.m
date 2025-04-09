@@ -7,17 +7,12 @@ f.Theme = "light";
 % Define colors for each motor
 colors = ['r', 'g', 'b', 'm', 'c', 'k'];
 
-    % Plot each motor in its own subplot
     for i = 1:6
         subplot(3, 2, i); % 3 rows, 2 columns, i-th subplot
         plot(time, rad2deg(-motorAngles(:, i+1)), 'Color', colors(i));
-        
-        % Set title and labels
         title(['Motor ' num2str(i)]);
         xlabel('Time (s)');
         ylabel('Motor Angles (degrees)');
-        
-        % Enable grid
         grid on; grid minor;
     end
 end

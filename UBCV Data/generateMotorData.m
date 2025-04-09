@@ -2,8 +2,8 @@ function [motorData, pose] = generateMotorData(pose, hexapod)
 ts = mean(diff(pose(:,1)));
 n_pose = length(pose);
 motorAngles = zeros(n_pose, 6);
-for i = 1:n_pose
-    [motorAngles(i, :)] = calcMotorAngles(pose(i,:),hexapod);
+for l = 1:n_pose
+    [motorAngles(l, :)] = calcMotorAngles(pose(l,:),hexapod);
 end
 motorData = [
     pose(:,1), ...
@@ -11,8 +11,8 @@ motorData = [
     -motorAngles(:,3), -motorAngles(:,4), ...
     -motorAngles(:,5), -motorAngles(:,6) ...
     ];
-for i = 2:7
-    motorData(:,i) = motorData(:,i).*smoothStep(pose(:,1), ts, 2).*smoothStep(pose(:,1), pose(end,1), pose(end,1)-1);
+for k = 2:7
+    motorData(:,k) = motorData(:,k).*smoothStep(pose(:,1), ts, 2).*smoothStep(pose(:,1), pose(end,1), pose(end,1)-1);
 end
 % plotMotorAngles(motorData);
     function plotMotorAngles(motorAngles) %#ok<DEFNU>

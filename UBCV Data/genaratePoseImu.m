@@ -1,6 +1,6 @@
 function [pose, tf, ts]= genaratePoseImu()
     file_number = 1;
-    DATA_PATH = 'C:\Users\james\OneDrive\Desktop\UBCV Data\Data';
+    DATA_PATH = 'C:\Users\james\OneDrive\Desktop\UBCV Data\Data';%% change this address 
     filelist = string({dir(fullfile(DATA_PATH, '*.mat')).name});
     data = load(fullfile(DATA_PATH, filelist(file_number)));
     disp(['Filename: ', filelist(file_number)]);

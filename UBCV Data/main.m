@@ -9,6 +9,7 @@ pose(:,3) = pose(:,3)  + hexapod.y_home;
 motorAngles = generateMotorData(pose, hexapod);
 
 simParams
+% out = sim("hp_v3.slx"); %% no controller
 out = sim("hp_v4.slx");
 motion_comp(out, pose);
 torque_calc(out, N, rated_torque, peak_torque);

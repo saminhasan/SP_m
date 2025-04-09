@@ -4,7 +4,7 @@ function X_full = acc_solver(z, a, dt)
     % Solve the second difference equation:
     % z(i+1) - 2z(i) + z(i-1) = a(i)*dt^2
     %
-    % We keep z(start_idx) and z(end_idx) fixed (known). We only solve for
+    % keep z(start_idx) and z(end_idx) fixed (known). Only solving for
     % z(start_idx+1) to z(end_idx-1).
     %
     % This ensures stable boundary conditions and reduces spikes.

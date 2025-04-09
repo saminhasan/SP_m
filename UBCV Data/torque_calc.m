@@ -31,7 +31,6 @@ end
 % Add legend with motor labels
 legend(plots, labels, 'Location', 'northwest');
 
-% Add y-lines for motor peaks and rated values
 yline(peak_torque, '-r', 'T-motor-peak', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
 yline(rated_torque, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','top');
 yline(-rated_torque, '-g', 'T-motor-rated', 'HandleVisibility', 'off', 'LabelVerticalAlignment','bottom');

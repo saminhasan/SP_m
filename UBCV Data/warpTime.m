@@ -4,7 +4,7 @@ function warpedTime =  warpTime(t, Ta)
     % User-specified parameters
     Tt = t(end);   % Total time
     % Ta = 1;    % Specified rise time parameter (acceleration time until Vmax)
-    Vmax = 1;  % Fixed maximum velocity
+    Vmax = 1;  % Fixed maximum velocity, realtime = 1
     
     % Derived parameters
     Am = 2/Ta;        % From Vmax=1 and Ta, Am must be 2/Ta
