@@ -46,10 +46,10 @@ function plotPose(pose)
     
     subplot(3,2,4);
     hold on;
-    plot(time, Rx, '-b', 'DisplayName', 'Rx');
+    plot(time, rad2deg(Rx), '-b', 'DisplayName', 'Rx');
     title('Rx Orientation');
     xlabel('Time (s)');
-    ylabel('Rx Orientation (rad)');
+    ylabel('Rx Orientation (deg)');
     legend;
     grid on;
     grid minor;
@@ -57,10 +57,10 @@ function plotPose(pose)
     
     subplot(3,2,5);
     hold on;
-    plot(time, Ry, '-b', 'DisplayName', 'Ry');
+    plot(time, rad2deg(Ry), '-b', 'DisplayName', 'Ry');
     title('Ry Orientation');
     xlabel('Time (s)');
-    ylabel('Ry Orientation (rad)');
+    ylabel('Ry Orientation (deg)');
     legend;
     grid on;
     grid minor;
@@ -68,10 +68,10 @@ function plotPose(pose)
     
     subplot(3,2,6);
     hold on;
-    plot(time, Rz, '-b', 'DisplayName', 'Rz');
+    plot(time, rad2deg(Rz), '-b', 'DisplayName', 'Rz');
     title('Rz Orientation');
     xlabel('Time (s)');
-    ylabel('Rz Orientation (rad)');
+    ylabel('Rz Orientation (deg)');
     legend;
     grid on;
     grid minor;

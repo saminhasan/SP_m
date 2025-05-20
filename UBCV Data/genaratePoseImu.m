@@ -1,12 +1,11 @@
 function [pose, tf, ts]= genaratePoseImu()
     file_number = 1;
-    DATA_PATH = 'C:\Users\james\OneDrive\Desktop\UBCV Data\Data';%% change this address 
+    DATA_PATH = 'C:\Users\james\OneDrive\Desktop\Matlab Codes\SP_m\UBCV Data\Data';%% change this address 
     filelist = string({dir(fullfile(DATA_PATH, '*.mat')).name});
     data = load(fullfile(DATA_PATH, filelist(file_number)));
     disp(['Filename: ', filelist(file_number)]);
     imu_data = data.data_mtl;% Data is saved in matrix name data_mtl
     n = length(imu_data);
-
     % plotIMUData(imu_data);
     imu_data(:, 1) = imu_data(:, 1) - imu_data(1,1); % Normalize time to start at zero
     time = imu_data(:, 1); % Time (s)
@@ -25,7 +24,7 @@ function [pose, tf, ts]= genaratePoseImu()
     pose = zeros(n,7);
     pose(:,1) = time;
     pose(:,3) = ZposAcHP;
-    for i = 2:7
-        pose(:,i) = signalWrapper(pose(:,1),pose(:,i)); adding 
-    end
+    % for i = 2:7
+    %     pose(:,i) = signalWrapper(pose(:,1),pose(:,i)); %adding 
+    % end
 end

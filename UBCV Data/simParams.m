@@ -19,8 +19,8 @@ platform_mass = 30; % kg
 efficiency = 0.9;
 N = 9; % MIT gear ratio*********************
 J_m = 12e-5; % mit motor inertia in motor frame
-peak_torque = 0.28*20*efficiency; % mit motor peak torque in motor frame
-rated_torque = 0.28*5*efficiency; % mit motor rated torque in motor frame
+peak_torque = 45*efficiency/N; % mit motor peak torque in motor frame
+rated_torque = 13*efficiency/N; % mit motor rated torque in motor frame
 
 
 % density as calculated to simulate reflected(arbitrary value-> no effect)
@@ -40,7 +40,7 @@ J_mr = J_m * N^2; % motor inertia in robot frame.
 J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot frame
 % total inertia in robot frame
 J_e = (J_mr + J_r);
-disp(['Inertia Ratio : ', num2str(J_r/J_mr)])
+% disp(['Inertia Ratio : ', num2str(J_r/J_mr)])
 % angular spring properties
 % holding torque required to hold platform at zero motor angle using angular springs.
 tau_0 = ((platform_mass / 6) * g * excenter.R) + (excenter_mass * g * excenter.R / 2) ...

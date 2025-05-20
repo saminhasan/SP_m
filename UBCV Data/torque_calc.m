@@ -9,12 +9,29 @@ thetas = out.simout.Data(:, (2:4:22)-1); %#ok<NASGU>
 omegas = out.simout.Data(:, 2:4:22);
 alphas = out.simout.Data(:, (2:4:22)+1); %#ok<NASGU>
 taus_load = out.simout.Data(:, (2:4:22) + 2);
-omegas_rad_motor = omegas * N; % Angular velocity in rad/s
+omegas_rad_motor = omegas * N; % Angular velocity in rad/s in motor frame
+tau_motor =  taus_load / N; % torque in motor frame
+power_motor = tau_motor .* omegas_rad_motor;
+
+tau_motor_rms = sqrt((tau_motor.^2)/length(tau_motor));
+
+% Compute max values
+[max_power] = max(max(power_motor));
+[max_tau] = max(max(tau_motor));
+[max_rad] = max(max(omegas_rad_motor));
+% Bench test - at 36 V, max RPM(motor frame) =  981 rpm -> 103 rad/s
+% Kt = 36/103  = 36/103 Nm/A = 36/103 V/ (rad/s)
+Kt = 0.28; % Nm/A from datasheet to be on the safe side.
+max_current = max_tau / Kt;
+
+% Print results
+fprintf('Max Power: %.6f W\n', max_power);
+fprintf('Max Torque: %.6f Nm \n', max_tau);
+fprintf('Max RPM : %.6f rad/s\n', max_rad);
+fprintf('Max Current: %.6f A\n', max_current);
+
+max_dynamic_torque = max(max(tau_motor));
 omegas_rpm_motor = omegas * (60 / (2 * pi))* N;
-tau_motor =  taus_load / N; % torque required in motor frame
-% Calculate power (P = τ * ω)
-% power_motor = tau_motor .* omegas_rad_motor; % Power in watts
-max_dynamic_torque = max(max(taus_load));
 
 % plot motor T omega Nm and RPM
 figure('Name', 'Torque (Nm) vs Angular Velocity (RPM)', 'NumberTitle', 'off');

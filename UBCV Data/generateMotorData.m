@@ -12,7 +12,7 @@ motorData = [
     -motorAngles(:,5), -motorAngles(:,6) ...
     ];
 for k = 2:7
-    motorData(:,k) = motorData(:,k).*smoothStep(pose(:,1), ts, 2).*smoothStep(pose(:,1), pose(end,1), pose(end,1)-1);
+    motorData(:,k) = motorData(:,k).*smoothStep(pose(:,1), ts, 1).*smoothStep(pose(:,1), pose(end,1), pose(end,1)-1);
 end
 % plotMotorAngles(motorData);
     function plotMotorAngles(motorAngles) %#ok<DEFNU>

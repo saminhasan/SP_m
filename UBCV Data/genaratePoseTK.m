@@ -1,91 +1,65 @@
-function [pose, tf, ts] = genaratePoseTK()
-n = 10; % number of full cycles.
+function [pose, tf, Ts] = genaratePoseTK()
+    n = 12; % number of cycles
+    data = readtable('Rots100.csv', 'CommentStyle', '#');
 
-% Read data
-filename = 'Rots_raw.csv';
-data = readtable(filename, 'CommentStyle', '#');
+    Ts = mean(diff(data.time));
+    t = (0:Ts:(data.time(end) + Ts) * n - Ts)';
+    
+    % Replicate and process signals
+    x = zeros(size(t));
+    y = repmat(data.Z - mean(data.Z), n, 1);
+    z = zeros(size(t));
+    
+    Rx = repmat(deg2rad(data.Y_rot), n, 1);    
+    Ry = repmat(deg2rad(data.Z_rot - mean(data.Z_rot)), n, 1);
+    Rz = repmat(deg2rad(data.X_rot - mean(data.X_rot)), n, 1);
 
-t = data{:, 'time'};
+    raw_pose = [t, x, y, z, Rx, Ry, Rz];
 
-y = data{:, 'Z'};
+    % Resample at 1kHz using spline
+    te = t(1):1e-3:t(end);
+    tf = te(end);
+    % data_new = interp1(t, raw_pose(:,2:end), te, 'spline');
+    data_new = spline(t, raw_pose(:,2:end)', te)';
 
-Rx = data{:, 'Y_rot'};
-Ry = data{:, 'Z_rot'};
-Rz = data{:, 'X_rot'};
-
-ts = mean(diff(t));
-
-te = (0:ts:(length(data.Variables)*n - 1) * ts)';
-tf = te(end);
-xe = zeros(length(te),1);
-ye = extend_signal(y,ts,n);
-ze = zeros(length(te),1);
-Rxe = extend_signal(Rx,ts,n);
-Rye = extend_signal(Ry,ts,n);
-Rze = extend_signal(Rz,ts,n);
-% plot_data(Rx, Rxe, t, te);
-
-ye = ye - mean(ye);
-Rxe = Rxe - mean(Rxe)/4; % don't mean center pitch
-Rye = Rye - mean(Rye);
-Rze = Rze - mean(Rze);
-
-pose = [te, xe, ye, ze, deg2rad(Rxe), deg2rad(Rye), deg2rad(Rze)];
-for i = 2:7
-    pose(:,i) = signalWrapper(pose(:,1),pose(:,i));
+    pose = [te', data_new];
 end
-% Local function for processing signals
-    function data_extended = extend_signal(data, ts, n)
-        N = length(data);
-        % Extend the signal over `n` cycles
-        data_extended = repmat(data, n, 1);
 
-        % Calculate acceleration-like terms
-        % acc = filter([1, -2, 1], ts^2, data);
-        acc_extended = filter([1, -2, 1], ts^2, data_extended);
-
-        % Define indices for interpolation
-        idx = (N-1):N:N*(n-1);
-        acc_extended(idx+2) = NaN;
-        acc_extended(idx+3) = NaN;
-
-        % Identify known and missing points
-        known_mask = ~isnan(acc_extended);
-        missing_mask = isnan(acc_extended);
-        t_known = find(known_mask);
-        acc_known = acc_extended(known_mask);
-        t_missing = find(missing_mask);
-
-        % Perform spline interpolation for missing values
-        acc_interp = spline(t_known, acc_known, t_missing);
-        acc_extended(missing_mask) = acc_interp;
-
-        % Solve the acceleration data
-        data_extended = acc_solver(data_extended, acc_extended, ts);
-        data_extended = detrend(data_extended,2); % removing trend from numerical integration.
-        offset = data_extended(N - 1) - data(N - 1);
-        data_extended = data_extended - offset;
-        data_extended(1) = data(1);
-    end
-
-    function plot_data(data, data_e, t, te) %#ok<DEFNU>
-        ts = mean(diff(t));
-        % % plots
-        ae = filter([1, -2, 1], ts^2, data_e);
-        a = filter([1, -2, 1], ts^2, data);
-
-        figure(1);
-        hold on;
-        plot(te, data_e, 'Color', 'g', 'DisplayName', 'Extended data');
-        plot(t, data, 'Color', 'b', 'DisplayName', 'Base data');
-        grid on;
-        legend;
-
-        figure(3);
-        hold on;
-        plot(te(3:end), ae(3:end), 'Color', 'r', 'DisplayName', 'Extended data');
-        plot(t(3:end),a(3:end), 'Color', 'b', 'DisplayName', 'Base data');
-        grid on;
-        legend;
-    end
-end
+% function [pose, tf, Ts] = genaratePoseTK()
+% n = 12; % number of full cycles.
+% 
+% % Read data
+% filename = 'Rots100.csv';
+% data = readtable(filename, 'CommentStyle', '#');
+% 
+% time = data.time;
+% Ts = mean(diff(time));
+% t = (0:Ts:(time(end)+ Ts)*n -Ts)';
+% x = zeros(length(t),1);
+% y =  repmat(data.Z, n, 1);
+% y = y - mean(y);
+% z = zeros(length(t),1);
+% Rx = repmat(deg2rad(data.Y_rot), n, 1);
+% Rx = Rx - max(Rx) + deg2rad(15);
+% Ry = repmat(deg2rad(data.Z_rot), n, 1);
+% Ry = Ry - mean(Ry);
+% Rz = repmat(deg2rad(data.X_rot), n, 1);
+% Rz = Rz - mean(Rz);
+% p = [t, x, y, z, Rx, Ry, Rz];
+% 
+% data = p(:,2:end);
+% % Generate new time vector at 1kHz
+% t_new = t(1):1e-3:t(end);
+% tf = t_new(end);
+% % Preallocate interpolated data
+% data_new = zeros(length(t_new), size(data,2));
+% 
+% % Spline interpolate each column
+% for i = 1:size(data,2)
+%     data_new(:,i) = spline(t, data(:,i), t_new);
+% end
+% pose = [t_new', data_new];
+% % for i = 2:7
+% %     pose(:,i) = signalWrapper(pose(:,1),pose(:,i));
+% % end
+% end
