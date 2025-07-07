@@ -1,6 +1,6 @@
 function [pose, tf, ts] = genPose()
     ts= 1e-3;
-    n = 15;
+    n = 4;
     % ****************
     % Model parameters
     % ****************
@@ -10,7 +10,7 @@ function [pose, tf, ts] = genPose()
                    % changes the maximum displacement:
                    %    p=0.33 --> -4cm to +2cm
                    %    p=0.40 --> -6cm to +2cm
-    amax = 7.5*g;    % maximum accelertaion, little impact on displacement or velocity
+    amax = 6*g;    % maximum accelertaion, little impact on displacement or velocity
     time = 0:ts:p*n' ;
     tf = time(end);
 
@@ -27,12 +27,12 @@ function [pose, tf, ts] = genPose()
     v = (-g + gm)   * t    + gm * (p/2/pi)   * sin(2*pi/p*t+phi0) + j1/(o+1)       * min(t,dt).^(o+1); %#ok<NASGU>
     s = (-g + gm)/2 * t.^2 - gm * (p/2/pi)^2 * cos(2*pi/p*t+phi0) + j1/(o+1)/(o+2) * min(t,dt).^(o+2) + j1/(o+1)*((t>dt).*dt).^(o+1).*(t-dt);
     f_trajectory = 1/p;
-    y = s - mean(s);%(max(s)-min(s))/2;
+    y = (s - mean(s));%(max(s)-min(s))/2;
     z = 0.05  * sin(2 * pi * f_trajectory * time)*0; % z (horizontal component, front back)
     x = 0.05  * sin(2 * pi * f_trajectory * time)*0; % x (horizontal component, left right)
     
     Ry = deg2rad(15.0)  *  sin(2 * pi * f_trajectory/2 * time + phi0 -pi/2)*0;
-    Rz = deg2rad(3.0)  *  sin(2 * pi * f_trajectory/2 * time+ phi0 -pi/2)*0;
+    Rz = deg2rad(10.0)  *  sin(2 * pi * f_trajectory/2 * time+ phi0 -pi/2)*0;
     Rx = deg2rad(2.5) * sin(2 * pi *  f_trajectory * time+ phi0 -pi/2)*0;
     pose = [time', x', y', z', Rx', Ry', Rz'];
 

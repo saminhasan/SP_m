@@ -2,14 +2,14 @@ function hexapod = get_params()
 % param start
 
 % Excenter arm
-excenter.R = 0.1;   % excenter radius
+excenter.R = 0.1;   % excenter radius servo arm radii
 excenter.o = 0.00;   % excenter offset to universal joint
 excenter.phi = atan2(excenter.o, excenter.R);
 excenter.h = excenter.R * sin(excenter.phi);
 excenter.b = excenter.R * cos(excenter.phi);
 % Connecting rod
 % coupler.L = (.02 + .12) * 2.4;
-coupler.L = (358.78)/1000;
+coupler.L = (358.78)/1000; % Length of coupler
 
 % Base and platform triangles are in the Z-X plane, with one side parallel to X
 base.L = (24 * 25.4)/1000; % Length of base
@@ -35,12 +35,12 @@ base.P23R = base.corner3 - (base.corner3 - base.corner2) / sqrt(dot(base.corner3
 
 base.P31L = base.corner3 + (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
 base.P31R = base.corner1 - (base.corner1 - base.corner3) / sqrt(dot(base.corner1 - base.corner3, base.corner1 - base.corner3)) * base.l - base.bearingwidth / 2 * [sin(base.orientation(2)); 0; cos(base.orientation(2))];
-base.bearings = [base.P12L, base.P12R, base.P23L, base.P23R, base.P31L, base.P31R];
-base.beta = deg2rad([-30,150, 90, 270, 210, 390]);%+ [pi/2, - pi/2, pi/2, - pi/2, pi/2, - pi/2];
+base.bearings = [base.P12L, base.P12R, base.P23L, base.P23R, base.P31L, base.P31R]; %b(i) in B frame
+base.beta = deg2rad([-30,150, 90, 270, 210, 390]);%+ [pi/2, - pi/2, pi/2, - pi/2, pi/2, - pi/2]; % rotate servo along y, arm extends along z
 base.beta_sim = base.beta - (pi/2);
 
 % Platform triangle
-platform.L = 0.305; % Length of base
+platform.L = 0.305; % Length of base 305
 platform.h = sqrt(platform.L^2 - (platform.L / 2)^2);
 platform.ri = platform.h / 3; % Umkreisradius
 platform.ro = 2 * platform.ri; % Inkreisradius

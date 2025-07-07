@@ -10,8 +10,8 @@ platform = hexapod.platform;
 f_trajectory = 1/0.75;
 % Physical constants and parameters
 g = 9.80665; % acceleration due to gravity, m/s^2
-rho = 7850; % kg/m^3 density of steel
-platform_mass = 30; % kg
+rho = 1; % kg/m^3 density of steel
+platform_mass = 6; % kg
 
 
 
@@ -40,7 +40,8 @@ J_mr = J_m * N^2; % motor inertia in robot frame.
 J_r = (platform_mass / 6) * excenter.R^2; % robot equivalent inertia in robot frame
 % total inertia in robot frame
 J_e = (J_mr + J_r);
-% disp(['Inertia Ratio : ', num2str(J_r/J_mr)])
+disp(['Inertia Ratio : ', num2str(J_r/J_mr)])
+disp(['Inertia Matched platform weight : ', num2str((J_m * N^2/(excenter.R^2 )) * 6), 'Kg'])
 % angular spring properties
 % holding torque required to hold platform at zero motor angle using angular springs.
 tau_0 = ((platform_mass / 6) * g * excenter.R) + (excenter_mass * g * excenter.R / 2) ...
@@ -66,8 +67,8 @@ linear_spring_offset = ((((platform_mass + 6 * coupler_mass+ 6 * excenter_mass/2
 K_e = angular_spring_constant; % ask rudy
 % Control parameters
 w_traj = f_trajectory * 2 * pi; % trajectory frequency
-w_n = 5 * w_traj; % controller bandwidth (approx).
-zeta = 1; % damping ratio
+w_n = 2 * pi* 30;%5 * w_traj; % controller bandwidth (approx).
+zeta = 1.0; % damping ratio
 P = w_n^2 * J_e - K_e; % proportional gain
 D = 2 * zeta * w_n * J_e; % derivative gain
 w_f = w_n * 10; % filter frequency

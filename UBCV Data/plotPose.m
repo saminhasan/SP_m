@@ -23,11 +23,11 @@ function plotPose(pose)
     
     subplot(3,2,2);
     hold on;
-    plot(time, y, '-b', 'DisplayName', 'Z');
+    plot(time, y, '-b', 'DisplayName', 'Y');
     
-    title('Z Position');
+    title('Y Position');
     xlabel('Time (s)');
-    ylabel('Z Position (m)');
+    ylabel('Y Position (m)');
     legend;
     grid on;
     grid minor;
@@ -35,10 +35,10 @@ function plotPose(pose)
     
     subplot(3,2,3);
     hold on;
-    plot(time, z, '-b', 'DisplayName', 'Y');
-    title('Z Position');
+    plot(time, z, '-b', 'DisplayName', 'Z');
+    title('Y Position');
     xlabel('Time (s)');
-    ylabel('Y Position (m)');
+    ylabel('Z Position (m)');
     legend;
     grid on;
     grid minor;

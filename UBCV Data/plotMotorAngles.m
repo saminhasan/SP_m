@@ -19,7 +19,7 @@ function plotMotorAngles(motorAngles)
     end
 
     % --- Second Derivative Plot ---
-    f2 = figure('Name', 'Motor Angle Acceleration (g) vs Time (s)', 'NumberTitle', 'off');
+    f2 = figure('Name', 'Motor Angular Acceleration (rad/s/s) vs Time (s)', 'NumberTitle', 'off');
     f2.Theme = "light";
 
     for i = 1:6

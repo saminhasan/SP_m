@@ -27,7 +27,7 @@ max_current = max_tau / Kt;
 % Print results
 fprintf('Max Power: %.6f W\n', max_power);
 fprintf('Max Torque: %.6f Nm \n', max_tau);
-fprintf('Max RPM : %.6f rad/s\n', max_rad);
+fprintf('Max RPM (Motor Frame): %.6f rad/s\n', max_rad/ 9.549297);
 fprintf('Max Current: %.6f A\n', max_current);
 
 max_dynamic_torque = max(max(tau_motor));
