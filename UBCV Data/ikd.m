@@ -27,7 +27,7 @@ torques = zeros(len,6);
 for i = 1:len
     % extract row i and turn into column vectors
     pos   = poses(i,1:3)';         % 3×1
-    rot   = poses(i,4:6)';         % 3×1 [Rx Ry Rz]
+    rot   = -poses(i,4:6)';         % 3×1 [Rx Ry Rz]
     acc   = accelerations(i,1:3)'; % 3×1 linear accel
     alpha = accelerations(i,4:6)'; % 3×1 angular accel
     theta_dd = thetas_ddot(i,:)';  % 6×1
