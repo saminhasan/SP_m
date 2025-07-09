@@ -13,6 +13,7 @@ end
 time = pose(:,1);
 T = tf; dt = ts;
 Nn    = numel(time);
+% theta = motorAngles2;
 theta = motorAngles2;
 
 q_traj = pose(:,2:7);
@@ -22,7 +23,9 @@ tau = ikd(q_traj,theta, ts, platform_mass, I_plate, hexapod.excenter.R, hexapod.
 out = sim("hp_v3.slx"); %% no controller
 sim_time = out.simout.Time;
 taus_load = out.simout.Data(:, (2:4:22) + 2)/N;
-% tau = ikd(q_traj,theta, ts, platform_mass, I_plate, hexapod.excenter.R, hexapod.coupler.L, J_mr, hexapod,9.81);
+
+close all;
+tau = ikd_lagrangian(q_traj,theta, ts, platform_mass, I_plate, hexapod.excenter.R, hexapod.coupler.L, J_mr, hexapod,9.81);
 colors = 'rgbcmyrgbcmy';
 for k = 1:6
     figure(k+10);

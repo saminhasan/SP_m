@@ -1,6 +1,6 @@
 function tau = ikd_lagrangian(q_traj, theta, ts, m_p, I_plate, r, l, J_mr, hexapod, g)
     N = size(q_traj, 1);
-    dt = ts
+    dt = ts;
     % Numerical differentiation
     % vel = gradient(, ts);
     % acc = gradient(vel, ts);
@@ -29,7 +29,7 @@ function tau = ikd_lagrangian(q_traj, theta, ts, m_p, I_plate, r, l, J_mr, hexap
         % R = Ry(rot(2))*Rx(rot(1))*Rz(rot(3)); % Yaw(Y), Pitch(X), Roll(Z)
         R = rotz(rad2deg(rot(3))) * roty(rad2deg(rot(2))) * rotx(rad2deg(rot(1)));
         % Forces and Torques (Lagrangian model simplified)
-        F = m_p * (a + [0; -g; 0]);                   % force (N)
+        F = m_p * (a + [0; g; 0]);                   % force (N)
         T = I_plate*alpha + cross(omega, I_plate*omega); % torque (Nm)
         wrench = [F; T];
 
@@ -43,12 +43,8 @@ function tau = ikd_lagrangian(q_traj, theta, ts, m_p, I_plate, r, l, J_mr, hexap
             u_L = L_i / norm(L_i);
 
             % Crank axis orientation (Y vertical)
-            % beta = hexapod.base.beta(i);
-            % z_crank = [-sin(beta);0;cos(beta)];
-
-            ux = roty(rad2deg(hexapod.base.beta(i))) * [0.0, 0.0, -1.0]'; % Unit vector along servo arm
-            
-            z_crank = ux;
+            beta =  hexapod.base.beta(i);
+            z_crank = [sin(beta +(pi/2)); 0; cos(beta+(pi/2))];
 
             lever_arm = r * cross(z_crank, u_L);
 
